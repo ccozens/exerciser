@@ -1,5 +1,6 @@
-import autoprefixer from 'autoprefixer';
-import cssnano from 'cssnano';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 
 const config = {
 	plugins: [autoprefixer, cssnano]
