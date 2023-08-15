@@ -11,18 +11,15 @@
 	export let Exercise: string = '';
 	export let interval: number = 0;
 
-    // convert interval to milliseconds
-    const intervalMs: number = interval * 1000;
-
     // tweened variable to count down from interval seconds
-	const time = tweened(0, {
-		duration: intervalMs
-	});
+	const time = tweened(0);
 
-        // start the timer
+        // start the timer, converting interval to ms
     function startTimer() {
         time.set(0);
-        time.set(intervalMs);
+        time.set(interval, {
+            duration: interval*1000
+        });
     }
 
     // call startTimer when started=true

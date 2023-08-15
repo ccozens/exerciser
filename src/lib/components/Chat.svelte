@@ -32,17 +32,17 @@
       }, 1000);
     }
 
-    function stopTimer() {
-      clearInterval(intervalId);
-    }
+    // function stopTimer() {
+    //   clearInterval(intervalId);
+    // }
 
-    onMount(() => {
-      startTimer();
-    });
+    // onMount(() => {
+    //   startTimer();
+    // });
 
-    onDestroy(() => {
-      stopTimer();
-    });
+    // onDestroy(() => {
+    //   stopTimer();
+    // });
   </script>
 
   <main>
