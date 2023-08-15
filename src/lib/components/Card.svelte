@@ -2,9 +2,16 @@
 <script lang="ts">
 	//  imports
 	import Timer from './Timer.svelte';
+    import Start from './Start.svelte';
 	import Rest from './Rest.svelte';
 	import { tweened } from 'svelte/motion';
+    import { started } from '$lib/stores';
 
+    function setStarted() {
+        started.set(true);
+    }
+
+    $: console.log('started', $started);
 
 	// props
 	export let Title: string = '';
@@ -19,16 +26,22 @@
 		duration: intervalMs
 	});
     // set the time to the interval
-	function setTime(event: CustomEvent<number>) {
+	function setTime() {
 		time.set(intervalMs);
         console.log('setTime');
 	}
+
+    function testFn() {
+        console.log('testFn');
+    }
 
 </script>
 
 <!-- html -->
 
-<Timer {interval} {time} on:startSession={setTime} />
+<Start on:startSession={setStarted} />
+<button on:click={() => started.set(false)}>Stop</button>
+<Timer {interval} {time}  />
 
 <div class="card">
 	<slot {Title} {Exercise} />

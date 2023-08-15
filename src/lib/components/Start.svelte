@@ -2,9 +2,13 @@
     // dispatch an event to start the session on click
     import { createEventDispatcher } from 'svelte';
 
-	const dispatch = createEventDispatcher<{
-		startSession: null; // startSession param with no payload
-	}>();
+	const dispatch = createEventDispatcher();
+
+	// dispatch an event to start the session on click
+function startSession() {
+    dispatch('startSession');
+    console.log('startSession');
+}
 </script>
 
-<button on:click={() => dispatch('startSession')}> Start</button>
+<button on:click={startSession}> Start component</button>

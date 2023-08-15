@@ -3,7 +3,7 @@
     import Timer from '$lib/components/Timer.svelte';
     import { currentPeriod, isRest } from '$lib/stores';
     import Start from '$lib/components/Start.svelte';
-
+    import { started } from '$lib/stores';
     // $: console.log('currentPeriod', currentPeriod);
     // $: console.log('isRest', isRest);
 
@@ -14,9 +14,12 @@
     $currentPeriod = 1;
     $isRest = false;
 
+    function setStarted() {
+        started.set(true);
+    }
 </script>
 
 
-<Start />
+<Start on:startSession={setStarted}/>
 <Card Title="Work" Exercise="Pushups" interval={exerciseInterval}  />
 {$isRest ? 'Resting' : 'Working'}

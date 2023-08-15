@@ -8,6 +8,7 @@
 
 	// round to whole seconds
 	$: seconds = Math.floor(reversedTime);
+    
 </script>
 
 {#if interval > 0}
