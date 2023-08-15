@@ -1,3 +1,3 @@
 import { writable } from 'svelte/store';
 
-export const currentPeriod = writable(1);
+export const currentPeriod = writable(0);
