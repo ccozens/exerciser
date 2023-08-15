@@ -5,6 +5,8 @@
 	import Stop from '$lib/components/Stop.svelte';
 
     let interval ;
+    let rest = 1;
+    let work = 3;
 	// async function to start a timer
 	function testTimer() {
 		// abort if not started
@@ -21,7 +23,7 @@
 				started.set(false);
                 clearInterval(interval); // stops loop
 			}
-		}, 1000);
+		}, $isRest? rest * 1000 : work * 1000);
 	}
 
 	// function to update started store
