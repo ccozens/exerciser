@@ -21,5 +21,8 @@
 
 
 <Start on:startSession={setStarted}/>
+<!-- here for dev, not sure I want -->
+<button on:click={() => started.set(false)}>Stop</button>
+
 <Card Title="Work" Exercise="Pushups" interval={exerciseInterval}  />
 {$isRest ? 'Resting' : 'Working'}
