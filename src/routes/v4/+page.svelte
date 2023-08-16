@@ -25,7 +25,7 @@
 	// rest period length (seconds)
 	let rest: number = 2;
 	// work period length (seconds)
-	let work: number = 5;
+	let work: number = 1;
     // work milliseconds
     $: workMs = work * 1000;
     // rest milliseconds
@@ -36,7 +36,7 @@
 	let numberOfPeriods: number = 5;
 
 	// interval timer
-	async function workoutTimer (rest: number, work: number, numberOfPeriods: number) {
+	async function workoutTimer (interval: number, numberOfPeriods: number) {
 		// abort if not started
 		if (!isStarted) return;
 
@@ -46,31 +46,31 @@
 			if (!$isRest) {
 				console.log('working start', 'period: ', $currentPeriod, 'isRest: ', $isRest, 'work interval: ', interval);
 				currentPeriod.set($currentPeriod + 1);
-				await timer.set(interval, { duration: interval });
+				await setTimer();
 				toggleRest();
-                zeroTimer();
 				console.log('working end', 'period: ', $currentPeriod, 'isRest: ', $isRest);
 			}
             if ($currentPeriod === numberOfPeriods) return;
 			// if isRest, set tweened time to rest interval
 			if ($isRest) {
                 console.log('resting start', 'period: ', $currentPeriod, 'isRest: ', $isRest, 'rest interval', interval);
-				await timer.set(interval, { duration: interval });
+				await setTimer();
 				toggleRest();
-                zeroTimer();
 				console.log('resting end', 'period: ', $currentPeriod, 'isRest: ', $isRest);
 			}
 		}
 		reset();
 	};
 
+	async function setTimer() {
+		await timer.set(interval, { duration: interval });
+		timer.set(0);
+	}
 	// toggle isRest
 	function toggleRest() {
 		isRest.set(!$isRest);
 	}
-    function zeroTimer() {
-        timer.set(0);
-    }
+
 	// function to update started store
 	function setStarted() {
 		started.set(true);
@@ -78,7 +78,7 @@
 	$: isStarted = $started;
 	// run timer if started
 	$: if (isStarted) {
-		workoutTimer(rest, work, numberOfPeriods);
+		workoutTimer(interval, numberOfPeriods);
 	}
 
 
@@ -88,17 +88,8 @@
 
 
 	<!-- <Timer {interval} {timer} /> -->
-
-	{#if $currentPeriod && $currentPeriod < numberOfPeriods}
-		<svelte:component this={Timer} {timer} {interval}/>
-		{#if isRest}
-			<h1>Rest</h1>
-		{:else}
-			<h1>Work</h1>
-		{/if}
-	{:else}
+	<Timer {interval} {timer} />
 		<button on:click={setStarted}>Start workout</button>
-	{/if}
 
 	<div class="buttons">
 		<button on:click={reset}>Reset workout</button>
@@ -108,6 +99,7 @@
 </main>
 
 <style>
+
 	main {
 		display: flex;
 		flex-direction: column;
@@ -121,23 +113,7 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.progress-wrapper {
-		width: 20vw;
-		height: 20vh;
-		background-color: #ccc;
-		border-radius: 10px;
-		overflow: hidden;
-	}
-	.progress-bar {
-		border-radius: 10px;
-		transition: height 0.1s ease-in-out;
-		background: linear-gradient(
-			rgba(2, 0, 36, 1) 0%,
-			rgba(9, 9, 121, 1) 35%,
-			rgba(0, 212, 255, 1) 100%
-		);
-	}
 
-	progress {
-	}
+
+
 </style>

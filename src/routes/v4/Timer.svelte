@@ -2,17 +2,18 @@
 <script lang="ts">
 	import { tweened } from 'svelte/motion';
 
-    export let interval: number = 1;
+
+	export let interval: number = 1;
     $: intervalSeconds = interval / 1000;
 
     export let timer = tweened(0, {duration: interval});
-
 
 	// $timer is the tweened value
 	$: seconds = timer ? Math.floor($timer / 1000) : 0;
 	$: countdownSeconds = intervalSeconds - seconds;
 
     $: height = $timer / interval;
+
 </script>
 
 	<div class="progress-wrapper">
@@ -41,6 +42,5 @@
 		);
 	}
 
-	progress {
-	}
+
 </style>
