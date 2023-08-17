@@ -2,7 +2,7 @@
 	import { tweened } from 'svelte/motion';
 	import { currentPeriod, isRest, started } from '$lib/stores';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
-	import { reset } from '$lib/functions/Reset';
+	import { reset, formatTime, calculateTotalWorkoutTime } from '$lib/functions/';
 
 	let rest = 2; // TYPE NUMBER OF SECONDS HERE
 	let work = 1; // TYPE NUMBER OF SECONDS HERE
@@ -55,12 +55,11 @@
 		intervalTimer(chosenWorkoutArray);
 	}
 
-	$: minutes = Math.floor($time / 1000 / 60);
-	$: seconds = Math.floor($time / 1000 - minutes * 60);
-
-	$: formattedTime = seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
+	$: formattedTime = formatTime($time);
 
 	$: interval = $isRest ? rest * 1000 : work * 1000;
+
+	const totalWorkoutTime = calculateTotalWorkoutTime(rest, work, numberOfPeriods);
 </script>
 
 <main>
@@ -70,9 +69,13 @@
 		<label for="rest">Rest Interval</label>
 		<input type="number" name="rest" id="rest" bind:value={rest} />
 	</form>
+
 	{#if !$started}
-		<span class="mins">0:00</span>
-		<p>{chosenWorkout} workout</p>
+		<p>Workout: {chosenWorkout}</p>
+		<p>
+			Workout length:
+			<span class="mins">{totalWorkoutTime}</span>
+		</p>
 	{:else}
 		<span class="mins">{formattedTime}</span>
 		<p>{$isRest ? 'Rest' : chosenWorkoutArray[$currentPeriod]}</p>
