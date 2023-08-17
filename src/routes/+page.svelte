@@ -1,18 +1,24 @@
 <script lang="ts">
 	import { started } from '$lib/stores';
-	import { reset } from '$lib/functions/';
+	// import { reset } from '$lib/functions/';
 	import { workouts } from '$lib/assets';
 	import Workout from '$lib/components/Workout.svelte';
 
+
 	let rest = 2; // TYPE NUMBER OF SECONDS HERE
-	let work = 1; // TYPE NUMBER OF SECONDS HERE
-	// create time with initial value of 5 seconds
+	let work = 3; // TYPE NUMBER OF SECONDS HERE
+	/* // run 5 second countdown before starting workout
+				if ($currentPeriod === 0 && $isRest) {
+					$time = 5000;
+                    console.log('5 second countdown');
+				} */
 
 	let chosenWorkout: string = 'isometric';
 	let chosenWorkoutArray: string[] = [];
 </script>
 
 <main>
+	<!-- form to allow work and rest interval updating -->
 	<form>
 		<label for="work">Work Interval</label>
 		<input type="number" name="work" id="work" bind:value={work} />
@@ -20,22 +26,27 @@
 		<input type="number" name="rest" id="rest" bind:value={rest} />
 	</form>
 
-
-	<Workout bind:chosenWorkoutArray={chosenWorkoutArray} {work} {rest} {chosenWorkout} />
+	<!-- chosenWorkoutArray bound so Workout can update this page -->
+	<Workout bind:chosenWorkoutArray {work} {rest} {chosenWorkout} />
 
 	<button on:click={() => started.set(true)}>Start</button>
-	<button on:click={() => reset(work)}>Stop</button>
 
-	{#each chosenWorkoutArray as exercise}
-		<p>{exercise}</p>
-	{/each}
+	<!-- exercises in workout -->
+	<div>
+		<h3>Chosen workout: <span class="capitalise">{chosenWorkout}</span></h3>
+		{#each chosenWorkoutArray as exercise}
+			<p>{exercise}</p>
+		{/each}
+	</div>
 
-	<!-- options -->
-
-	{#each Object.keys(workouts) as workout}
-		<button on:click={() => (chosenWorkout = workout)}>{workout}</button>
-	{/each}
-
+	<!-- workouts to choose -->
+	<div>
+		{#each Object.keys(workouts) as workout}
+			<button on:click={() => (chosenWorkout = workout)}
+				><span class="capitalise">{workout}</span></button
+			>
+		{/each}
+	</div>
 </main>
 
 <style>
@@ -44,5 +55,9 @@
 		flex-direction: column;
 		width: 600px;
 		margin: 0 auto;
+	}
+
+	.capitalise {
+		text-transform: capitalize;
 	}
 </style>
