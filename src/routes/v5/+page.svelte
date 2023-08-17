@@ -12,8 +12,17 @@
 	let numberOfPeriods: number = 2;
 
     // workouts
-	const isometric = ['Wall sit', 'Plank', 'Chair squat', 'Glute bridge', 'Side plank'];
-	const movement = ['Push up', 'Squat', 'Lunge', 'Tricep dip', 'Burpee'];
+    const workouts = {
+        isometric: ['Wall sit', 'Plank', 'Chair squat', 'Glute bridge', 'Side plank'],
+        movement: ['Push up', 'Squat', 'Lunge', 'Tricep dip', 'Burpee']
+    }
+
+    let chosenWorkout: string = 'isometric';
+    function getWorkout(workout: string): string[] {
+        return workouts[workout as keyof typeof workouts];
+    }
+
+    $: chosenWorkoutArray = getWorkout(chosenWorkout);
 
 	$: isStarted = $started;
 
@@ -41,10 +50,9 @@
 			}
 		}
 	};
-
 	// call intervalTimer to start timer if isStarted is true
 	$: if (isStarted) {
-		intervalTimer(isometric);
+		intervalTimer(chosenWorkoutArray);
 	}
 
 	$: minutes = Math.floor($time / 1000 / 60);
@@ -53,7 +61,7 @@
 	$: formattedTime = seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
 
     $: interval = $isRest ? rest * 1000 : work * 1000;
-    $: console.log(interval);// this is the interval for the progress bar
+
     function reset() {
         $currentPeriod =0;
         $isRest = false;
@@ -81,6 +89,16 @@
 
 	<button on:click={() => started.set(true)}>Start</button>
     <button on:click={reset}>Stop</button>
+
+    {#each chosenWorkoutArray as exercise}
+        <p>{exercise}</p>
+    {/each}
+
+    <!-- options -->
+
+    {#each Object.keys(workouts) as workout}
+        <button on:click={() => chosenWorkout = workout}>{workout}</button>
+    {/each}
 
     <ProgressBar time={$time} {interval} />
 
