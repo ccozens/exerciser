@@ -3,6 +3,7 @@
 	import { currentPeriod, isRest, started } from '$lib/stores';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import { reset, formatTime, calculateTotalWorkoutTime } from '$lib/functions/';
+	import { workouts } from '$lib/assets';
 
 	let rest = 2; // TYPE NUMBER OF SECONDS HERE
 	let work = 1; // TYPE NUMBER OF SECONDS HERE
@@ -11,11 +12,7 @@
 
 	let numberOfPeriods: number = 2;
 
-	// workouts
-	const workouts = {
-		isometric: ['Wall sit', 'Plank', 'Chair squat', 'Glute bridge', 'Side plank'],
-		movement: ['Push up', 'Squat', 'Lunge', 'Tricep dip', 'Burpee']
-	};
+
 
 	let chosenWorkout: string = 'isometric';
 	function getWorkout(workout: string): string[] {
