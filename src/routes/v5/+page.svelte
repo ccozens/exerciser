@@ -1,18 +1,27 @@
 <script lang="ts">
 	import { tweened } from 'svelte/motion';
 	import { currentPeriod, isRest, started } from '$lib/stores';
+	import ProgressBar from './ProgressBar.svelte';
 
 
 	let rest = 2; // TYPE NUMBER OF SECONDS HERE
 	let work = 1; // TYPE NUMBER OF SECONDS HERE
 	// let $timer = tweened(0);
 	let time = tweened(work * 1000, {duration: 0}); // duration 0 means the timer sets instantly, and this is a default value meaning it is maintained when the $time is set later
-	let numberOfPeriods: number = 5;
+
+	let numberOfPeriods: number = 2;
+
+    // workouts
+	const isometric = ['Wall sit', 'Plank', 'Chair squat', 'Glute bridge', 'Side plank'];
+	const movement = ['Push up', 'Squat', 'Lunge', 'Tricep dip', 'Burpee'];
 
 	$: isStarted = $started;
 
-	const intervalTimer = () => {
-		// if time is greater than 0
+	const intervalTimer = (workout: string[]) => {
+        if (!isStarted) return;
+        if(workout)
+{        numberOfPeriods = workout.length;
+}		// if time is greater than 0
 		if ($time > 0) {
 			// decrement time by 1000 ms
 			$time = $time - 1000;
@@ -35,7 +44,7 @@
 
 	// call intervalTimer to start timer if isStarted is true
 	$: if (isStarted) {
-		intervalTimer();
+		intervalTimer(isometric);
 	}
 
 	$: minutes = Math.floor($time / 1000 / 60);
@@ -43,6 +52,8 @@
 
 	$: formattedTime = seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
 
+    $: interval = $isRest ? rest * 1000 : work * 1000;
+    $: console.log(interval);// this is the interval for the progress bar
     function reset() {
         $currentPeriod =0;
         $isRest = false;
@@ -58,8 +69,6 @@
         <input type="number" name="work" id="work" bind:value={work} />
         <label for="rest">Rest Interval</label>
         <input type="number" name="rest" id="rest" bind:value={rest} />
-        <label for="periods">Number of Periods</label>
-        <input type="number" name="periods" id="periods" bind:value={numberOfPeriods} />
     </form>
 	{#if !$started}
 		<span class="mins">0:00</span>
@@ -68,12 +77,13 @@
 	{/if}
 	<p>period: {$currentPeriod}</p>
 	<p>isRest: {$isRest}</p>
-	<!-- <progress value={time / work} /> -->
+    <p>numberOfPeriods: {numberOfPeriods}</p>
 
 	<button on:click={() => started.set(true)}>Start</button>
     <button on:click={reset}>Stop</button>
 
-    
+    <ProgressBar time={$time} {interval} />
+
 </main>
 
 <style>
@@ -84,8 +94,5 @@
 		margin: 0 auto;
 	}
 
-	progress {
-		display: block;
-		width: 100%;
-	}
+
 </style>
