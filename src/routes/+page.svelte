@@ -2,7 +2,7 @@
 	import { tweened } from 'svelte/motion';
 	import { currentPeriod, isRest, started } from '$lib/stores';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
-	import { reset, formatTime, calculateTotalWorkoutTime } from '$lib/functions/';
+	import { reset, formatTime, calculateTotalWorkoutTime, getWorkout } from '$lib/functions/';
 	import { workouts } from '$lib/assets';
 
 	let rest = 2; // TYPE NUMBER OF SECONDS HERE
@@ -12,12 +12,7 @@
 
 	let numberOfPeriods: number = 2;
 
-
-
 	let chosenWorkout: string = 'isometric';
-	function getWorkout(workout: string): string[] {
-		return workouts[workout as keyof typeof workouts];
-	}
 
 	$: chosenWorkoutArray = getWorkout(chosenWorkout);
 
