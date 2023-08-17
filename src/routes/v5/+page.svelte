@@ -52,6 +52,15 @@
 </script>
 
 <main>
+
+    <form>
+        <label for="work">Work Interval</label>
+        <input type="number" name="work" id="work" bind:value={work} />
+        <label for="rest">Rest Interval</label>
+        <input type="number" name="rest" id="rest" bind:value={rest} />
+        <label for="periods">Number of Periods</label>
+        <input type="number" name="periods" id="periods" bind:value={numberOfPeriods} />
+    </form>
 	{#if !$started}
 		<span class="mins">0:00</span>
 	{:else}
@@ -63,6 +72,8 @@
 
 	<button on:click={() => started.set(true)}>Start</button>
     <button on:click={reset}>Stop</button>
+
+    
 </main>
 
 <style>
