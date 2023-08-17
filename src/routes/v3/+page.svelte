@@ -7,14 +7,16 @@
 
 	let timer = tweened(0);
 
+	// set started to true if false
 	const start = () => {
-		timer.set(interval, {
-			duration: interval
-		});
+		if ($started) return;
+		if(!$started) {$started = true}
 	};
 
+	// set started to false if true
 	const stop = () => {
-		timer.set(0);
+		if (!$started) return;
+		if($started) {$started = false}
 	};
 
 	// workouts
@@ -25,52 +27,50 @@
 	// rest period length (seconds)
 	let rest: number = 2;
 	// work period length (seconds)
-	let work: number = 5;
-    // work milliseconds
-    $: workMs = work * 1000;
-    // rest milliseconds
-    $: restMs = rest * 1000;
-    // define interval for calculating progress bar
-    $: interval = $isRest ? restMs : workMs;
+	let work: number = 1;
+	// work milliseconds
+	$: workMs = work * 1000;
+	// rest milliseconds
+	$: restMs = rest * 1000;
+	// define interval for calculating progress bar
+	$: interval = $isRest ? restMs : workMs;
 	// number of work periods
 	let numberOfPeriods: number = 5;
 
 	// interval timer
-	async function workoutTimer (rest: number, work: number, numberOfPeriods: number) {
+	async function workoutTimer(interval: number, numberOfPeriods: number) {
 		// abort if not started
 		if (!isStarted) return;
+		console.log('fn started: ', $currentPeriod, $isRest, $started, interval);
+		// create intervalTimer
+		let  intervalTimer ;
 
-
-		for (let i = 0; i < numberOfPeriods; i++) {
-			// if !isRest, increment currentPeriod and set tweened time to work interval
-			if (!$isRest) {
-				console.log('working start', 'period: ', $currentPeriod, 'isRest: ', $isRest, 'work interval: ', interval);
-				currentPeriod.set($currentPeriod + 1);
-				await timer.set(interval, { duration: interval });
-				toggleRest();
-                zeroTimer();
-				console.log('working end', 'period: ', $currentPeriod, 'isRest: ', $isRest);
-			}
-            if ($currentPeriod === numberOfPeriods) return;
-			// if isRest, set tweened time to rest interval
-			if ($isRest) {
-                console.log('resting start', 'period: ', $currentPeriod, 'isRest: ', $isRest, 'rest interval', interval);
-				await timer.set(interval, { duration: interval });
-				toggleRest();
-                zeroTimer();
-				console.log('resting end', 'period: ', $currentPeriod, 'isRest: ', $isRest);
-			}
+		// cycle through numberOfPeriods loops of work and rest
+		if ($currentPeriod < numberOfPeriods) {
+			console.log('in loop: ', $currentPeriod, $isRest, $started, interval);
+			intervalTimer = setInterval(() => {
+				if ($currentPeriod < numberOfPeriods) {
+					timer.set(interval, { duration: interval });
+					toggleRest();
+					// iterate currentPeriod if a work period
+					if (!$isRest)
+					{$currentPeriod = $currentPeriod + 1}
+				}
+			},
+			// call again at interval timing
+			interval);
 		}
-		reset();
-	};
+		// when currentPeriod reaches numberOfPeriods, cancel timer
+		clearInterval(intervalTimer);
+	}
 
 	// toggle isRest
 	function toggleRest() {
 		isRest.set(!$isRest);
 	}
-    function zeroTimer() {
-        timer.set(0);
-    }
+	function zeroTimer() {
+		timer.set(0);
+	}
 	// function to update started store
 	function setStarted() {
 		started.set(true);
@@ -78,27 +78,15 @@
 	$: isStarted = $started;
 	// run timer if started
 	$: if (isStarted) {
-		workoutTimer(rest, work, numberOfPeriods);
+		workoutTimer(interval, numberOfPeriods);
 	}
-
-
 </script>
 
 <main>
+	<Timer {interval} {timer} />
+	current period: {$currentPeriod}
 
-
-	<!-- <Timer {interval} {timer} /> -->
-
-	{#if $currentPeriod && $currentPeriod < numberOfPeriods}
-		<svelte:component this={Timer} {timer} {interval}/>
-		{#if isRest}
-			<h1>Rest</h1>
-		{:else}
-			<h1>Work</h1>
-		{/if}
-	{:else}
-		<button on:click={setStarted}>Start workout</button>
-	{/if}
+	<button on:click={setStarted}>Start workout</button>
 
 	<div class="buttons">
 		<button on:click={reset}>Reset workout</button>
@@ -120,24 +108,5 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-	}
-	.progress-wrapper {
-		width: 20vw;
-		height: 20vh;
-		background-color: #ccc;
-		border-radius: 10px;
-		overflow: hidden;
-	}
-	.progress-bar {
-		border-radius: 10px;
-		transition: height 0.1s ease-in-out;
-		background: linear-gradient(
-			rgba(2, 0, 36, 1) 0%,
-			rgba(9, 9, 121, 1) 35%,
-			rgba(0, 212, 255, 1) 100%
-		);
-	}
-
-	progress {
 	}
 </style>
