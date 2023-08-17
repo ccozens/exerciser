@@ -80,8 +80,10 @@
     </form>
 	{#if !$started}
 		<span class="mins">0:00</span>
-	{:else}
+        <p>{chosenWorkout} workout</p>
+        {:else}
 		<span class="mins">{formattedTime}</span>
+        <p>{$isRest ? 'Rest' : chosenWorkoutArray[$currentPeriod]}</p>
 	{/if}
 	<p>period: {$currentPeriod}</p>
 	<p>isRest: {$isRest}</p>
