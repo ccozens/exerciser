@@ -1,17 +1,17 @@
 <!-- script -->
 <script lang="ts">
 	import { tweened } from 'svelte/motion';
-	import { currentPeriod, isRest, started } from '$lib/stores';
+	import { currentPeriod, isRest, started, preTimerRunning } from '$lib/stores';
 	import { formatTime, calculateTotalWorkoutTime, getWorkout } from '$lib/functions';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 
-    function reset(work: number) {
-	currentPeriod.set(0);
-	isRest.set(false);
-	started.set(false);
-	time.set(work * 1000);
-}
-    // props
+	function reset(work: number) {
+		$currentPeriod = 0;
+		$isRest = false;
+		$started = false;
+		$time = work * 1000;
+	}
+	// props
 	export let rest = 2; // TYPE NUMBER OF SECONDS HERE
 	export let work = 5; // TYPE NUMBER OF SECONDS HERE
 	export let chosenWorkout: string = 'isometric';
@@ -20,13 +20,15 @@
 	// create time with initial value of work seconds
 	let time = tweened(work*1000, { duration: 0 }); // duration 0 means the timer sets instantly, and this is a default value meaning it is maintained when the $time is set later
 
-    // main intervalTimer function
+	$: console.log($time, $currentPeriod);
+	// main intervalTimer function
 	const intervalTimer = (workout: string[]) => {
 		if (!started) return;
-        // set number of periods based on workout array length
+		// set number of periods based on workout array length
 		if (workout) {
 			numberOfPeriods = workout.length;
 		}
+
 		// if time is greater than 0
 		if ($time > 0) {
 			// decrement time by 1000 ms
@@ -38,11 +40,12 @@
 			if ($currentPeriod < numberOfPeriods) {
 				// iterate currentPeriod if isRest is false
 				!$isRest ? currentPeriod.set($currentPeriod + 1) : null;
+				// call reset if currentPeriod has reached numberOfPeriods
                 if ($currentPeriod === numberOfPeriods) {
-                    reset(work);
-                }
+					$started = false;
+				}
 				// toggle isRest
-				isRest.set(!$isRest);
+				$isRest = !$isRest;
 				// set time to work or rest interval
 				$time = $isRest ? rest * 1000 : work * 1000;
 				// run intervalTimer again in 1 millisecond
@@ -53,14 +56,13 @@
 
 	$: chosenWorkoutArray = getWorkout(chosenWorkout);
 
-	// call intervalTimer to start timer if started is true
+	// when started is true, run 5 second leadin timer and then call intervalTimer to start timer
 	$: if ($started) {
 		intervalTimer(chosenWorkoutArray);
 	}
 
 	$: formattedTime = formatTime($time);
 	const totalWorkoutTime = calculateTotalWorkoutTime(rest, work, numberOfPeriods);
-	$: interval = $isRest ? rest * 1000 : work * 1000;
 </script>
 
 <!-- html -->
@@ -70,12 +72,15 @@
 		Workout length:
 		<span class="mins">{totalWorkoutTime}</span>
 	</p>
-{:else}
+{/if}
+{#if $started && $preTimerRunning}
+	<p>Starting in <span class="mins">{formattedTime}</span></p>
+{/if}
+{#if $started && !$preTimerRunning}
 	<span class="mins">{formattedTime}</span>
 	<p class="exercise">{$isRest ? 'Rest' : chosenWorkoutArray[$currentPeriod]}</p>
 	<p>Period: {$currentPeriod} / {numberOfPeriods}</p>
-
-	<!-- <ProgressBar time={$time} {interval} /> -->
 {/if}
+<!-- <ProgressBar time={$time} {interval} /> -->
 
 <button on:click={() => reset(work)}>Stop</button>

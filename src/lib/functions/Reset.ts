@@ -1,4 +1,4 @@
-import { currentPeriod, isRest, started } from '$lib/stores';
+import { currentPeriod, isRest, started, preTimerRunning } from '$lib/stores';
 import { tweened } from 'svelte/motion';
 
 export function reset(work: number) {
@@ -6,6 +6,7 @@ export function reset(work: number) {
 	isRest.set(false);
 	started.set(false);
 	time.set(work * 1000);
+	preTimerRunning.set(false);
 }
 
 const time = tweened(0);

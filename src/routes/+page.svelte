@@ -7,17 +7,15 @@
 
 	let rest = 2; // TYPE NUMBER OF SECONDS HERE
 	let work = 3; // TYPE NUMBER OF SECONDS HERE
-	/* // run 5 second countdown before starting workout
-				if ($currentPeriod === 0 && $isRest) {
-					$time = 5000;
-                    console.log('5 second countdown');
-				} */
+
 
 	let chosenWorkout: string = 'isometric';
 	let chosenWorkoutArray: string[] = [];
 </script>
 
 <main>
+
+	<h1> Set rest to true on start and add "intro" fn or similar to each workout so there is a leadin ?? </h1>
 	<!-- form to allow work and rest interval updating -->
 	<form>
 		<label for="work">Work Interval</label>
