@@ -4,7 +4,6 @@
 	import { workouts } from '$lib/assets';
 	import Workout from '$lib/components/Workout.svelte';
 
-
 	let rest = 2; // TYPE NUMBER OF SECONDS HERE
 	let work = 3; // TYPE NUMBER OF SECONDS HERE
 
