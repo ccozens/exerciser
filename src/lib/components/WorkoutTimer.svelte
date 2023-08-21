@@ -51,16 +51,8 @@
 		started.set(false);
 	}
 
-	function createCountdown(interval: number) {
-		return new Timer(interval);
-	}
-
-	function handleNewtCountdownClick() {
-		countdown = createCountdown(interval);
-	}
 </script>
 
-<button on:click={handleNewtCountdownClick}>New countdown</button>
 <button on:click={() => started.set(true)}>Start</button>
 <button on:click={() => started.set(false)}>Stop</button>
 
