@@ -1,12 +1,18 @@
 <!-- script -->
 <script lang="ts">
-	export let time = 0;
-	export let interval: number = 1;
+	import type { Tweened } from "svelte/motion";
+	import { tweened } from "svelte/motion";
+
+	export let tween: Tweened<number> = tweened(0, { duration: 0 }) ;
+	export let tweenedDuration: number = 1;
 </script>
 
 
 <div class="progress-wrapper">
-	<div class="progress-bar" style="height: {((time) / interval) * 100}%" />
+	<div class="progress-bar" style="height: {$tween/tweenedDuration}"></div>
+	{$tween}
+	{tweenedDuration}
+	{$tween/tweenedDuration}
 </div>
 
 <style>

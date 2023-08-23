@@ -9,17 +9,17 @@
 	// define workout
 	let chosenWorkout = workoutExercises['isometric'];
 
-	const preWorkoutDuration: number = 0.2;
-	const workDuration: number = 0.2;
-	const restDuration: number = 0.2;
+	const preWorkoutDuration: number = 1;
+	const workDuration: number = 2;
+	const restDuration: number = 3;
 
 	const { finalWorkoutArray, totalDuration } = createFinalWorkoutArray(
 		chosenWorkout,
-		preWorkoutDuration,
+		restDuration,
 		workDuration,
-		restDuration
+		preWorkoutDuration
 	);
-
+$:	console.log(finalWorkoutArray);
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
 
