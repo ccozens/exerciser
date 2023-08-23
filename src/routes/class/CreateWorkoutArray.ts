@@ -1,5 +1,6 @@
 import { tweened } from 'svelte/motion';
 import type { Workout } from './types';
+
 export function createWorkoutArray(
 	workout: string[],
 	workDuration: number,
