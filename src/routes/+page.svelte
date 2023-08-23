@@ -39,11 +39,7 @@
 	$: currentPeriod = finalWorkoutArray[currentIndex];
 
 
-	$: {
-		if ($started) {
-			currentIndex;
-		}
-	}
+	
 	// define current period progress
 	$: {
 		if ($started && currentPeriod) {
