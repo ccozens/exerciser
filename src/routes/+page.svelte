@@ -36,11 +36,8 @@
 	// define current period
 	let currentIndex: number = 0;
 
-	// $: currentIndex = Math.floor($totalDurationTween / 1000);
 	$: currentPeriod = finalWorkoutArray[currentIndex];
-	// $: currentPeriod = finalWorkoutArray.find((period) => period.label === label);
 
-	$: ({ tweenedDuration, tween } = currentPeriod || {});
 
 	$: {
 		if ($started) {
