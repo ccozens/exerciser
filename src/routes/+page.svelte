@@ -1,20 +1,22 @@
 <script lang="ts">
-	import { workouts } from '$lib/assets';
+	import { workoutExercises } from '$lib/assets';
 	import { started } from '$lib/stores';
-	import { formatTime, createWorkoutArray, appendPreTimer } from '$lib/functions';
+	import { formatTime, createWorkoutArray, appendPreTimer, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
-	import { Period } from '$lib/components/';
+	import { Period, WorkoutChoiceButton } from '$lib/components/';
 
-	let workout = workouts.isometric;
 
-	const preWorkoutDuration: number = 1;
+	// define workout
+	let chosenWorkout = workoutExercises["isometric"];
+
+	const preWorkoutDuration: number = 0.2;
 	const workDuration: number = 0.2;
 	const restDuration: number = 0.2;
 
 	// construct flat array of objects with label and tween, interpolating exercise and rest periods
 
-	const initialWorkoutArray = createWorkoutArray(workout, workDuration, restDuration);
+	const initialWorkoutArray = createWorkoutArray(chosenWorkout, workDuration, restDuration);
 
 	// append preWorkoutDuration to workoutArray
 	const finalWorkoutArray = appendPreTimer(initialWorkoutArray, preWorkoutDuration);
@@ -38,7 +40,7 @@
 	$: currentPeriod = finalWorkoutArray[currentIndex];
 	// $: currentPeriod = finalWorkoutArray.find((period) => period.label === label);
 
-	$: ({ label, tweenedDuration, tween } = currentPeriod || {});
+	$: ({ tweenedDuration, tween } = currentPeriod || {});
 
 	$: {
 		if ($started) {
@@ -48,12 +50,7 @@
 	// define current period progress
 	$: {
 		if ($started && currentPeriod) {
-			setTween(tweenedDuration, tween);
-		}
-	}
-	$: {
-		if ($started && currentIndex === finalWorkoutArray.length) {
-			reset();
+			setPeriod();
 		}
 	}
 
@@ -66,13 +63,10 @@
 		totalDurationTween.set(0);
 	}
 
-	async function setTween(tweenedDuration: number, tween: Tweened<number>) {
-		// tween
-		await tween.set(tweenedDuration, { duration: tweenedDuration });
-		// increment currentIndex
-		currentIndex++;
+	// increment currentIndex when tween completes
+	export async function setPeriod() {
+		currentIndex = await setTween(currentIndex, currentPeriod);
 	}
-	$: console.log($started);
 </script>
 
 <main>
@@ -88,11 +82,13 @@
 	{/each}
 
 	<h3>ex list</h3>
-	{#each workout as exercise}
+	{#each chosenWorkout as exercise}
 		<p>{exercise}</p>
 	{/each}
 
 	<h4>Total progress</h4>
 	<p>{formattedTotalDuration}</p>
 	<progress max={totalDuration} value={$totalDurationTween} />
+
+	<WorkoutChoiceButton bind:chosenWorkout/>
 </main>

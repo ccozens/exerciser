@@ -2,11 +2,11 @@ import { tweened } from 'svelte/motion';
 import type { Workout } from '$lib/types';
 
 export function createWorkoutArray(
-	workout: string[],
+	chosenWorkout: string[],
 	workDuration: number,
 	restDuration: number
 ): Workout[] {
-	const workoutArray = workout.flatMap((exercise, index) => {
+	const workoutArray = chosenWorkout.flatMap((exercise, index) => {
 		let tweenedDuration = workDuration * 1000;
 		const period = {
 			label: exercise,
