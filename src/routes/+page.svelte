@@ -1,60 +1,98 @@
 <script lang="ts">
-	import { started } from '$lib/stores';
-	// import { reset } from '$lib/functions/';
 	import { workouts } from '$lib/assets';
-	import Workout from '$lib/components/Workout.svelte';
+	import { started } from '$lib/stores';
+	import { formatTime, createWorkoutArray, appendPreTimer } from '$lib/functions';
+	import { tweened } from 'svelte/motion';
+	import type { Tweened } from 'svelte/motion';
+	import { Period } from '$lib/components/';
 
-	let rest = 2; // TYPE NUMBER OF SECONDS HERE
-	let work = 3; // TYPE NUMBER OF SECONDS HERE
+	let workout = workouts.isometric;
 
+	const preWorkoutDuration: number = 1;
+	const workDuration: number = 0.2;
+	const restDuration: number = 0.2;
 
-	let chosenWorkout: string = 'isometric';
-	let chosenWorkoutArray: string[] = [];
+	// construct flat array of objects with label and tween, interpolating exercise and rest periods
+
+	const initialWorkoutArray = createWorkoutArray(workout, workDuration, restDuration);
+
+	// append preWorkoutDuration to workoutArray
+	const finalWorkoutArray = appendPreTimer(initialWorkoutArray, preWorkoutDuration);
+
+	// calculate total duration of workout (in ms)
+	const totalDuration = finalWorkoutArray.reduce((acc, curr) => acc + curr.tweenedDuration, 0);
+
+	// tween for total workout
+	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
+
+	$: if ($started) {
+		totalDurationTween.set(totalDuration * 1000, { duration: totalDuration * 1000 });
+	}
+
+	$: formattedTotalDuration = formatTime($totalDurationTween);
+
+	// define current period
+	let currentIndex: number = 0;
+
+	// $: currentIndex = Math.floor($totalDurationTween / 1000);
+	$: currentPeriod = finalWorkoutArray[currentIndex];
+	// $: currentPeriod = finalWorkoutArray.find((period) => period.label === label);
+
+	$: ({ label, tweenedDuration, tween } = currentPeriod || {});
+
+	$: {
+		if ($started) {
+			currentIndex;
+		}
+	}
+	// define current period progress
+	$: {
+		if ($started && currentPeriod) {
+			setTween(tweenedDuration, tween);
+		}
+	}
+	$: {
+		if ($started && currentIndex === finalWorkoutArray.length) {
+			reset();
+		}
+	}
+
+	function reset() {
+		// set started to false
+		started.set(false);
+		// reset currentIndex
+		currentIndex = 0;
+		// reset totalDurationTween
+		totalDurationTween.set(0);
+	}
+
+	async function setTween(tweenedDuration: number, tween: Tweened<number>) {
+		// tween
+		await tween.set(tweenedDuration, { duration: tweenedDuration });
+		// increment currentIndex
+		currentIndex++;
+	}
+	$: console.log($started);
 </script>
 
 <main>
-
-	<h1> Set rest to true on start and add "intro" fn or similar to each workout so there is a leadin ?? </h1>
-	<!-- form to allow work and rest interval updating -->
-	<form>
-		<label for="work">Work Interval</label>
-		<input type="number" name="work" id="work" bind:value={work} />
-		<label for="rest">Rest Interval</label>
-		<input type="number" name="rest" id="rest" bind:value={rest} />
-	</form>
-
-	<!-- chosenWorkoutArray bound so Workout can update this page -->
-	<Workout bind:chosenWorkoutArray {work} {rest} {chosenWorkout} />
-
 	<button on:click={() => started.set(true)}>Start</button>
+	<button on:click={() => reset()}>Reset</button>
 
-	<!-- exercises in workout -->
-	<div>
-		<h3>Chosen workout: <span class="capitalise">{chosenWorkout}</span></h3>
-		{#each chosenWorkoutArray as exercise}
-			<p>{exercise}</p>
-		{/each}
-	</div>
+	<p>totalDuration: {totalDuration / 1000} seconds</p>
 
-	<!-- workouts to choose -->
-	<div>
-		{#each Object.keys(workouts) as workout}
-			<button on:click={() => (chosenWorkout = workout)}
-				><span class="capitalise">{workout}</span></button
-			>
-		{/each}
-	</div>
+	{#each finalWorkoutArray as period, index}
+		{#if index === currentIndex}
+			<Period {...period} />
+		{/if}
+	{/each}
+
+	<h3>ex list</h3>
+	{#each workout as exercise}
+		<p>{exercise}</p>
+	{/each}
+
+	<h4>Total progress</h4>
+	<p>{formattedTotalDuration}</p>
+	<progress max={totalDuration} value={$totalDurationTween} />
 </main>
-
-<style>
-	main {
-		display: flex;
-		flex-direction: column;
-		width: 600px;
-		margin: 0 auto;
-	}
-
-	.capitalise {
-		text-transform: capitalize;
-	}
-</style>
