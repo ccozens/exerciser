@@ -6,7 +6,6 @@
 	import type { Tweened } from 'svelte/motion';
 	import { Period, WorkoutChoiceButton } from '$lib/components/';
 
-
 	// define workout
 	let chosenWorkout = workoutExercises['isometric'];
 
@@ -24,24 +23,36 @@
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
 
+	// define formatted total duration
+	$: formattedTotalDuration = formatTime($totalDurationTween);
+
+	// set totalDurationTween duration to totalDuration when started
 	$: if ($started) {
 		totalDurationTween.set(totalDuration * 1000, { duration: totalDuration * 1000 });
 	}
-
-	$: formattedTotalDuration = formatTime($totalDurationTween);
 
 	// define current period
 	let currentIndex: number = 0;
 
 	$: currentPeriod = finalWorkoutArray[currentIndex];
 
-	// define current period progress
+	// set tween for current period and then increment currentIndex when tween completes
+	export async function setPeriod() {
+		currentIndex = await setTween(currentIndex, currentPeriod);
+	}
+
+	// set current period when started, or reset when stopped
 	$: {
-		if ($started && currentPeriod) {
+		if ($started && currentPeriod && currentIndex >= 0 && currentIndex < finalWorkoutArray.length) {
 			setPeriod();
+		}
+		if ($started && !currentPeriod) {
+			reset();
 		}
 	}
 
+
+	// reset workout
 	function reset() {
 		// set started to false
 		started.set(false);
@@ -49,11 +60,6 @@
 		currentIndex = 0;
 		// reset totalDurationTween
 		totalDurationTween.set(0);
-	}
-
-	// increment currentIndex when tween completes
-	export async function setPeriod() {
-		currentIndex = await setTween(currentIndex, currentPeriod);
 	}
 </script>
 
