@@ -13,8 +13,6 @@ export function createFinalWorkoutArray(
 	// append preWorkoutDuration to workoutArray
 	const finalWorkoutArray = appendPreTimer(initialWorkoutArray, preWorkoutDuration);
 
-	// calculate total duration of workout (in ms)
-	const totalDuration = finalWorkoutArray.reduce((acc, curr) => acc + curr.tweenedDuration, 0);
 
-	return { finalWorkoutArray, totalDuration };
+	return finalWorkoutArray;
 }

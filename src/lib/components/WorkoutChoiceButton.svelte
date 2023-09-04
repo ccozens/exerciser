@@ -7,6 +7,7 @@
 
 	function getWorkoutOnClick(workout: string) {
 		chosenWorkout = getWorkout(workout);
+		return chosenWorkout;
 	}
 </script>
 

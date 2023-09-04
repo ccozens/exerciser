@@ -6,6 +6,10 @@ export function createWorkoutArray(
 	workDuration: number,
 	restDuration: number
 ): Workout[] {
+	if (!chosenWorkout) {
+        return [];
+    }
+	
 	const workoutArray = chosenWorkout.flatMap((exercise, index) => {
 		let tweenedDuration = workDuration * 1000;
 		const period = {

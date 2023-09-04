@@ -6,20 +6,24 @@
 	import type { Tweened } from 'svelte/motion';
 	import { Period, WorkoutChoiceButton } from '$lib/components/';
 
-	// define workout
-	let chosenWorkout = workoutExercises['isometric'];
+	// define workout and update when chosenWorkout changes
+	let defaultWorkout: string[] = workoutExercises['isometric'];
+	$: chosenWorkout = workoutExercises['isometric'];
 
 	const preWorkoutDuration: number = 1;
 	const workDuration: number = 2;
 	const restDuration: number = 3;
 
-	const { finalWorkoutArray, totalDuration } = createFinalWorkoutArray(
-		chosenWorkout,
+	// create finalWorkoutArray and totalDuration, and update when chosenWorkout changes
+	$: finalWorkoutArray = createFinalWorkoutArray(
+		chosenWorkout || defaultWorkout,
 		restDuration,
 		workDuration,
 		preWorkoutDuration
 	);
-$:	console.log(finalWorkoutArray);
+
+	// calculate total duration of workout (in ms)
+	$: totalDuration = finalWorkoutArray.reduce((acc, curr) => acc + curr.tweenedDuration, 0);
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
 
@@ -50,7 +54,6 @@ $:	console.log(finalWorkoutArray);
 			reset();
 		}
 	}
-
 
 	// reset workout
 	function reset() {
@@ -84,5 +87,5 @@ $:	console.log(finalWorkoutArray);
 	<p>{formattedTotalDuration}</p>
 	<progress max={totalDuration} value={$totalDurationTween} />
 
-	<WorkoutChoiceButton bind:chosenWorkout />
+	<WorkoutChoiceButton bind:chosenWorkout/>
 </main>
