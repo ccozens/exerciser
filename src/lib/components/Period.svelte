@@ -8,6 +8,7 @@
 	export let tween: Tweened<number> = tweened(0, { duration: 0 });
 	export let tweenedDuration: number = 0;
 	export let nextLabel: string = 'exercise';
+	export let direction:string = 'height';
 
 	$: tweenedProgress = $tween / tweenedDuration;
 
@@ -17,7 +18,7 @@
 </script>
 
 <p>{label}</p>
-<ProgressBar {tweenedProgress} />
+<ProgressBar {tweenedProgress} {direction}/>
 
 {#if setNextLabel}
 	<Speech text={nextLabel} />

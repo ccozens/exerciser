@@ -5,7 +5,7 @@
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
-	import { Period, WorkoutChoiceButton } from '$lib/components/';
+	import { Period, WorkoutChoiceButton, ProgressBar } from '$lib/components/';
 
 	// define workout and update when chosenWorkout changes
 	let defaultWorkout: string[] = workoutExercises['isometric'];
@@ -13,7 +13,7 @@
 
 	const preWorkoutDuration: number = 4;
 	const workDuration: number = 5;
-	const restDuration: number = 5;
+	const restDuration: number = 1;
 
 	// create finalWorkoutArray and totalDuration, and update when chosenWorkout changes
 	$: finalWorkoutArray = createFinalWorkoutArray(
@@ -27,9 +27,10 @@
 	$: totalDuration = finalWorkoutArray.reduce((acc, curr) => acc + curr.tweenedDuration, 0);
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
-
+		$: tweenedProgress = $totalDurationTween / totalDuration;
 	// define formatted total duration
-	$: formattedTotalDuration = formatTime($totalDurationTween);
+	$: formattedCurrentTime = formatTime($totalDurationTween);
+	$: formattedTotalDuration = formatTime(totalDuration);
 
 	// set totalDurationTween duration to totalDuration when started
 	$: if ($started) {
@@ -42,7 +43,7 @@
 	let nextLabel: string = '';
 
 	$: currentPeriod = finalWorkoutArray[currentIndex];
-	$: if (currentIndex < finalWorkoutArray.length) {
+	$: if (currentIndex < finalWorkoutArray.length-1) {
 		nextPeriod = finalWorkoutArray[currentIndex + 1];
 		nextLabel = nextPeriod.label;
 	}
@@ -77,8 +78,6 @@
 	<button on:click={() => started.set(true)}>Start</button>
 	<button on:click={() => reset()}>Reset</button>
 
-	<p>totalDuration: {totalDuration / 1000} seconds</p>
-
 	{#each finalWorkoutArray as period, index}
 		{#if index === currentIndex}
 			<Period {...period} {nextLabel} />
@@ -91,8 +90,17 @@
 	{/each}
 
 	<h4>Total progress</h4>
-	<p>{formattedTotalDuration}</p>
-	<progress max={totalDuration} value={$totalDurationTween} />
+	<p>{formattedCurrentTime} / { formattedTotalDuration }</p>
+	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
+	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh"
+	direction="width"
+
+	{tweenedProgress} />
 
 	<WorkoutChoiceButton bind:chosenWorkout />
 </main>
+
+<style lang="postcss">
+
+
+</style>
