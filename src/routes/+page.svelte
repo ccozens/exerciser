@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { workoutExercises } from '$lib/assets';
 	import { started } from '$lib/stores';
+	import type { Workout } from '$lib/types';
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
@@ -10,9 +11,9 @@
 	let defaultWorkout: string[] = workoutExercises['isometric'];
 	$: chosenWorkout = workoutExercises['isometric'];
 
-	const preWorkoutDuration: number = 1;
-	const workDuration: number = 2;
-	const restDuration: number = 3;
+	const preWorkoutDuration: number = 4;
+	const workDuration: number = 5;
+	const restDuration: number = 5;
 
 	// create finalWorkoutArray and totalDuration, and update when chosenWorkout changes
 	$: finalWorkoutArray = createFinalWorkoutArray(
@@ -37,8 +38,14 @@
 
 	// define current period
 	let currentIndex: number = 0;
+	let nextPeriod: Workout;
+	let nextLabel: string = '';
 
 	$: currentPeriod = finalWorkoutArray[currentIndex];
+	$: if (currentIndex < finalWorkoutArray.length) {
+		nextPeriod = finalWorkoutArray[currentIndex + 1];
+		nextLabel = nextPeriod.label;
+	}
 
 	// set tween for current period and then increment currentIndex when tween completes
 	export async function setPeriod() {
@@ -74,7 +81,7 @@
 
 	{#each finalWorkoutArray as period, index}
 		{#if index === currentIndex}
-			<Period {...period} />
+			<Period {...period} {nextLabel} />
 		{/if}
 	{/each}
 
@@ -87,5 +94,5 @@
 	<p>{formattedTotalDuration}</p>
 	<progress max={totalDuration} value={$totalDurationTween} />
 
-	<WorkoutChoiceButton bind:chosenWorkout/>
+	<WorkoutChoiceButton bind:chosenWorkout />
 </main>
