@@ -6,7 +6,6 @@
 	import type { Tweened } from 'svelte/motion';
 	import { Button, Period, WorkoutSelector, ProgressBar } from '$lib/components/';
 
-
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
 	// define total duration
@@ -15,7 +14,7 @@
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
 	$: tweenedProgress = $totalDurationTween / totalDuration;
-	
+
 	// define formatted total duration
 	$: formattedCurrentTime = formatTime($totalDurationTween);
 	$: formattedTotalDuration = formatTime(totalDuration);
@@ -64,31 +63,38 @@
 		// reset totalDurationTween
 		totalDurationTween.set(0);
 	}
+	$: workoutDisplay = 'isometric';
 </script>
 
 <main>
 	<Button text="Start" on:click={setStarted} />
 	<Button text="Reset" on:click={reset} />
 
+	<!-- display current exercise and progress bar -->
 	{#each finalWorkoutArray as period, index}
 		{#if index === currentIndex}
 			<Period {...period} {nextLabel} />
 		{/if}
 	{/each}
 
-	<h3>ex list</h3>
+	<h3><span class="capitals">{workoutDisplay}</span> exercises</h3>
+	<p>Workout duration: {formattedTotalDuration}</p>
 	{#each $chosenWorkout as exercise}
 		<p>{exercise}</p>
 	{/each}
 
+	<!-- workout progress -->
 	<h4>Total progress</h4>
 	<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
 
 	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
 	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh" direction="width" {tweenedProgress} />
 
-	<WorkoutSelector  />
+	<WorkoutSelector bind:workoutDisplay />
 </main>
 
 <style lang="postcss">
+	.capitals {
+		text-transform: capitalize;
+	}
 </style>

@@ -4,6 +4,12 @@
 	import { Button } from '$lib/components/';
 	import { chosenWorkout } from '$lib/stores';
 
+	export let workoutDisplay: string = 'isometric';
+
+	function setWorkout(workout: string) {
+		workoutDisplay = workout;
+	}
+
 	function getWorkoutOnClick(workout: string) {
 		const workoutLowerCase = workout.toLowerCase();
 		chosenWorkout.set(workoutExercises[workoutLowerCase])
@@ -15,6 +21,7 @@
 	<Button
 		text={workout}
 		on:click={() => {
+			setWorkout(workout);
 			getWorkoutOnClick(workout);
 		}}
 	/>
