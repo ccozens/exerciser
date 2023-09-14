@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import { workoutExercises } from '$lib/assets';
-import { preWorkoutDuration, restDuration, workDuration } from '$lib/stores/durations'; // if `durations` omitted from import string SSR fails??
+import { preWorkoutDuration, restDuration, workDuration } from '$lib/stores/elementDurations'; // if `elementDurations` omitted from import string SSR fails??
 import { createFinalWorkoutArray } from '$lib/functions';
 
 export const chosenWorkout = writable(workoutExercises['isometric']);
