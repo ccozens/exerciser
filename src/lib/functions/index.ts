@@ -1,7 +1,4 @@
-
 export * from './FormatTime';
-
-export * from './GetWorkout';
 
 export * from './AppendPreTimer';
 

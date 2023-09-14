@@ -1,6 +1,5 @@
 <!-- script -->
 <script lang="ts">
-	import { getWorkout } from '$lib/functions';
 	import { workoutExercises } from '$lib/assets';
 	import { Button } from '$lib/components/';
 	import { chosenWorkout } from '$lib/stores';

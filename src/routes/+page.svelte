@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { workoutExercises } from '$lib/assets';
-	import { chosenWorkout, started } from '$lib/stores';
+	import { chosenWorkout, started, workoutInfo } from '$lib/stores';
 	import type { Workout } from '$lib/types';
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
@@ -8,20 +7,11 @@
 	import { Button, Period, WorkoutSelector, ProgressBar } from '$lib/components/';
 
 
-	const preWorkoutDuration: number = 4;
-	const workDuration: number = 5;
-	const restDuration: number = 1;
+	// define workout
+	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
+	// define total duration
+	$: totalDuration = $workoutInfo.totalDuration;
 
-	// create finalWorkoutArray and totalDuration, and update when chosenWorkout changes
-	$: finalWorkoutArray = createFinalWorkoutArray(
-		$chosenWorkout,
-		restDuration,
-		workDuration,
-		preWorkoutDuration
-	);
-
-	// calculate total duration of workout (in ms)
-	$: totalDuration = finalWorkoutArray.reduce((acc, curr) => acc + curr.tweenedDuration, 0);
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
 	$: tweenedProgress = $totalDurationTween / totalDuration;
