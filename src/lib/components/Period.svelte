@@ -3,7 +3,6 @@
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
 	import ProgressBar from './ProgressBar.svelte';
-	import { Speech } from '$lib/components';
 
 	export let label: string = 'exercise';
 	export let tween: Tweened<number> = tweened(0, { duration: 0 });

@@ -25,11 +25,11 @@
 	}
 
 	// define current period
-	let currentIndex: number = 0;
-	let nextPeriod: Workout;
-	let nextLabel: string = '';
-
+	$: currentIndex = 0;
 	$: currentPeriod = finalWorkoutArray[currentIndex];
+	$: nextPeriod = finalWorkoutArray[currentIndex + 1];
+	$: nextLabel = nextPeriod.label;
+
 	$: if (currentIndex < finalWorkoutArray.length - 1) {
 		nextPeriod = finalWorkoutArray[currentIndex + 1];
 		nextLabel = nextPeriod.label;
@@ -39,6 +39,10 @@
 	export async function setPeriod() {
 		currentIndex = await setTween(currentIndex, currentPeriod);
 	}
+
+	async function resetPeriod() {
+		currentIndex = await setTween(0, finalWorkoutArray[0]);
+	};
 
 	// set current period when started, or reset when stopped
 	$: {
@@ -55,13 +59,18 @@
 		started.set(true);
 	}
 	// reset workout
-	function reset() {
+	async function reset() {
 		// set started to false
 		started.set(false);
+		await resetPeriod();
+		// reset totalDurationTween
+		totalDurationTween.set(0, {duration: 0});
 		// reset currentIndex
 		currentIndex = 0;
-		// reset totalDurationTween
-		totalDurationTween.set(0);
+		// reset currentPeriod
+		currentPeriod = finalWorkoutArray[currentIndex];
+		// reset nextPeriod
+		nextPeriod = finalWorkoutArray[currentIndex + 1];
 	}
 	$: workoutDisplay = 'isometric';
 
