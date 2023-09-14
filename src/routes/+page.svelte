@@ -70,25 +70,31 @@
 	<Button text="Start" on:click={setStarted} />
 	<Button text="Reset" on:click={reset} />
 
-	<!-- display current exercise and progress bar -->
-	{#each finalWorkoutArray as period, index}
-		{#if index === currentIndex}
-			<Period {...period} {nextLabel} />
-		{/if}
-	{/each}
+	{#if $started}
+		<!-- display current exercise and progress bar -->
+		{#each finalWorkoutArray as period, index}
+			{#if index === currentIndex}
+				<Period {...period} {nextLabel} />
+			{/if}
+		{/each}
+		<!-- workout progress -->
+		<h4>Total progress</h4>
+		<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
+
+		<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
+		<ProgressBar
+			--wrapper-width="90vw"
+			--wrapper-height="5vh"
+			direction="width"
+			{tweenedProgress}
+		/>
+	{/if}
 
 	<h3><span class="capitals">{workoutDisplay}</span> exercises</h3>
 	<p>Workout duration: {formattedTotalDuration}</p>
 	{#each $chosenWorkout as exercise}
 		<p>{exercise}</p>
 	{/each}
-
-	<!-- workout progress -->
-	<h4>Total progress</h4>
-	<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
-
-	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
-	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh" direction="width" {tweenedProgress} />
 
 	<WorkoutSelector bind:workoutDisplay />
 </main>
