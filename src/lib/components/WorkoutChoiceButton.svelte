@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { getWorkout } from '$lib/functions';
 	import { workoutExercises } from '$lib/assets';
-
+	import { Button } from '$lib/components/';
 	export let chosenWorkout: string[] = workoutExercises['isometric'];
 
 	function getWorkoutOnClick(workout: string) {
@@ -13,9 +13,10 @@
 
 <!-- html -->
 {#each Object.keys(workoutExercises) as workout}
-	<button
+	<Button
+		text={workout}
 		on:click={() => {
 			getWorkoutOnClick(workout);
-		}}>{workout}</button
-	>
+		}}
+	/>
 {/each}

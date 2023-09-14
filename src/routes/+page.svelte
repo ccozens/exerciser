@@ -5,7 +5,7 @@
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
-	import { Period, WorkoutChoiceButton, ProgressBar } from '$lib/components/';
+	import { Button, Period, WorkoutChoiceButton, ProgressBar } from '$lib/components/';
 
 	// define workout and update when chosenWorkout changes
 	let defaultWorkout: string[] = workoutExercises['isometric'];
@@ -27,7 +27,7 @@
 	$: totalDuration = finalWorkoutArray.reduce((acc, curr) => acc + curr.tweenedDuration, 0);
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
-		$: tweenedProgress = $totalDurationTween / totalDuration;
+	$: tweenedProgress = $totalDurationTween / totalDuration;
 	// define formatted total duration
 	$: formattedCurrentTime = formatTime($totalDurationTween);
 	$: formattedTotalDuration = formatTime(totalDuration);
@@ -43,7 +43,7 @@
 	let nextLabel: string = '';
 
 	$: currentPeriod = finalWorkoutArray[currentIndex];
-	$: if (currentIndex < finalWorkoutArray.length-1) {
+	$: if (currentIndex < finalWorkoutArray.length - 1) {
 		nextPeriod = finalWorkoutArray[currentIndex + 1];
 		nextLabel = nextPeriod.label;
 	}
@@ -63,6 +63,10 @@
 		}
 	}
 
+	// start workout
+	function setStarted() {
+		started.set(true);
+	}
 	// reset workout
 	function reset() {
 		// set started to false
@@ -75,8 +79,8 @@
 </script>
 
 <main>
-	<button on:click={() => started.set(true)}>Start</button>
-	<button on:click={() => reset()}>Reset</button>
+	<Button text="Start" on:click={setStarted}/>
+	<Button text="Reset" on:click={reset}/>
 
 	{#each finalWorkoutArray as period, index}
 		{#if index === currentIndex}
@@ -90,19 +94,13 @@
 	{/each}
 
 	<h4>Total progress</h4>
-	<p>{formattedCurrentTime} / { formattedTotalDuration }</p>
+	<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
 
 	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
-	<ProgressBar
-		--wrapper-width="90vw"
-		--wrapper-height="5vh"
-		direction="width"
-		{tweenedProgress} />
+	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh" direction="width" {tweenedProgress} />
 
 	<WorkoutChoiceButton bind:chosenWorkout />
 </main>
 
 <style lang="postcss">
-
-
 </style>

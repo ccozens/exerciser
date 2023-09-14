@@ -2,12 +2,11 @@
 <script lang='ts'>
 
     export let text = '' ;
-    export let voice ;
 
-	function speak(text: string, voice) {
+	function speak(text: string) {
         speechSynthesis.cancel();
 		const utterance = new SpeechSynthesisUtterance(text);
-		utterance.voice = voice;
+		// utterance.voice = voice;
 		speechSynthesis.speak(utterance);
 	}
 </script>
