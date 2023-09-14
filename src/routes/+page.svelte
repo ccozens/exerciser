@@ -5,7 +5,7 @@
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
-	import { Button, Period, WorkoutChoiceButton, ProgressBar } from '$lib/components/';
+	import { Button, Period, WorkoutSelector, ProgressBar } from '$lib/components/';
 
 	// define workout and update when chosenWorkout changes
 	let defaultWorkout: string[] = workoutExercises['isometric'];
@@ -79,8 +79,8 @@
 </script>
 
 <main>
-	<Button text="Start" on:click={setStarted}/>
-	<Button text="Reset" on:click={reset}/>
+	<Button text="Start" on:click={setStarted} />
+	<Button text="Reset" on:click={reset} />
 
 	{#each finalWorkoutArray as period, index}
 		{#if index === currentIndex}
@@ -99,7 +99,7 @@
 	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
 	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh" direction="width" {tweenedProgress} />
 
-	<WorkoutChoiceButton bind:chosenWorkout />
+	<WorkoutSelector bind:chosenWorkout />
 </main>
 
 <style lang="postcss">
