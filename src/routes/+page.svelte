@@ -64,12 +64,19 @@
 		totalDurationTween.set(0);
 	}
 	$: workoutDisplay = 'isometric';
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key !== ' ' && event.key !== 'Escape') return;
+		if (event.key === ' ') {
+			setStarted();
+		}
+		if (event.key === 'Escape') {
+			reset();
+		}
+	}
 </script>
 
 <main>
-	<Button text="Start" on:click={setStarted} />
-	<Button text="Reset" on:click={reset} />
-
 	{#if $started}
 		<!-- display current exercise and progress bar -->
 		{#each finalWorkoutArray as period, index}
@@ -90,14 +97,20 @@
 		/>
 	{/if}
 
-	<h3><span class="capitals">{workoutDisplay}</span> exercises</h3>
-	<p>Workout duration: {formattedTotalDuration}</p>
+	<h1>Interval exerciser</h1>
+
+	<h3><span class="capitals">{workoutDisplay}</span> workout</h3>
+	<p>Duration: {formattedTotalDuration}</p>
 	{#each $chosenWorkout as exercise}
 		<p>{exercise}</p>
 	{/each}
 
 	<WorkoutSelector bind:workoutDisplay />
+	<Button text="Start" on:click={setStarted} />
+	<Button text="Reset" on:click={reset} />
 </main>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <style lang="postcss">
 	.capitals {
