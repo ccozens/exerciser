@@ -91,11 +91,13 @@
 
 	<h4>Total progress</h4>
 	<p>{formattedCurrentTime} / { formattedTotalDuration }</p>
-	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
-	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh"
-	direction="width"
 
-	{tweenedProgress} />
+	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
+	<ProgressBar
+		--wrapper-width="90vw"
+		--wrapper-height="5vh"
+		direction="width"
+		{tweenedProgress} />
 
 	<WorkoutChoiceButton bind:chosenWorkout />
 </main>

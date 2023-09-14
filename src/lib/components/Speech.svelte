@@ -1,37 +1,10 @@
 <!-- script -->
 <script lang='ts'>
-    import { onMount } from 'svelte';
-    import { browser } from '$app/environment';
 
-    let voicesPromise: Promise<SpeechSynthesisVoice[]> ;
-    if (browser) {
-        voicesPromise= new Promise((resolve) => {
-            speechSynthesis.onvoiceschanged = () => {
-                voices = speechSynthesis.getVoices();
-                resolve(voices);
-            };
-        });
-    }
-    let voices: SpeechSynthesisVoice[] = [];
+    export let text = '' ;
+    export let voice ;
 
-    let voice: SpeechSynthesisVoice ;
-
-    let isReady = false;
-    $: isReady = typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== null;
-
-
-   onMount(async () => {
-        voices = await voicesPromise;
-        voice = voices[50];
-    });
-
-
-	export let text = 'Hello world';
-
-    // run speak when text updates
-    $: isReady ? speak() : null;
-
-	function speak() {
+	function speak(text: string, voice) {
         speechSynthesis.cancel();
 		const utterance = new SpeechSynthesisUtterance(text);
 		utterance.voice = voice;
