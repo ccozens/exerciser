@@ -1,15 +1,12 @@
 <script lang="ts">
 	import { workoutExercises } from '$lib/assets';
-	import { started } from '$lib/stores';
+	import { chosenWorkout, started } from '$lib/stores';
 	import type { Workout } from '$lib/types';
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
 	import { Button, Period, WorkoutSelector, ProgressBar } from '$lib/components/';
 
-	// define workout and update when chosenWorkout changes
-	let defaultWorkout: string[] = workoutExercises['isometric'];
-	$: chosenWorkout = workoutExercises['isometric'];
 
 	const preWorkoutDuration: number = 4;
 	const workDuration: number = 5;
@@ -17,7 +14,7 @@
 
 	// create finalWorkoutArray and totalDuration, and update when chosenWorkout changes
 	$: finalWorkoutArray = createFinalWorkoutArray(
-		chosenWorkout || defaultWorkout,
+		$chosenWorkout,
 		restDuration,
 		workDuration,
 		preWorkoutDuration
@@ -89,7 +86,7 @@
 	{/each}
 
 	<h3>ex list</h3>
-	{#each chosenWorkout as exercise}
+	{#each $chosenWorkout as exercise}
 		<p>{exercise}</p>
 	{/each}
 
@@ -99,7 +96,7 @@
 	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
 	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh" direction="width" {tweenedProgress} />
 
-	<WorkoutSelector bind:chosenWorkout />
+	<WorkoutSelector  />
 </main>
 
 <style lang="postcss">

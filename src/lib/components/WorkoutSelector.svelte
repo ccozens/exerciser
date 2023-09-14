@@ -3,11 +3,11 @@
 	import { getWorkout } from '$lib/functions';
 	import { workoutExercises } from '$lib/assets';
 	import { Button } from '$lib/components/';
-	export let chosenWorkout: string[] = workoutExercises['isometric'];
+	import { chosenWorkout } from '$lib/stores';
 
 	function getWorkoutOnClick(workout: string) {
-		chosenWorkout = getWorkout(workout);
-		return chosenWorkout;
+		const workoutLowerCase = workout.toLowerCase();
+		chosenWorkout.set(workoutExercises[workoutLowerCase])
 	}
 </script>
 
