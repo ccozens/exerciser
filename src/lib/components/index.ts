@@ -4,6 +4,5 @@ export { default as ProgressBar } from './ProgressBar.svelte';
 
 export { default as WorkoutSelector } from './WorkoutSelector.svelte';
 
-export { default as Speech } from './Speech.svelte';
 
 export { default as Button } from './Button.svelte';

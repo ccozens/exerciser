@@ -24,28 +24,30 @@
 	async function loadVoices() {
 		// fetch the available voices.
 		voices = speechSynthesis.getVoices();
-		// set default voice as first in list
-		voice = voices[0];
 		return voices;
 	}
+
 
 	onMount(async () => {
 		await loadVoices();
 		voice = voices[50];
 	});
 
+
+
 	function speak(nextLabel: string) {
-        speechSynthesis.cancel();
+		speechSynthesis.cancel();
 		const utterance = new SpeechSynthesisUtterance(nextLabel);
 		utterance.voice = voice;
 		speechSynthesis.speak(utterance);
 	}
 
-	$: if (setNextLabel) {
+	$: if (setNextLabel && voice) {
 		speak(setNextLabel);
 	}
-
 </script>
 
 <p>{label}</p>
 <ProgressBar {tweenedProgress} {direction} />
+{voices[50]}
+{voice}
