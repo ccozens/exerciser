@@ -97,10 +97,10 @@
 <article>
 
 	<h2><span class="capitals">{workoutDisplay}</span> workout</h2>
+	<hr />
 	<div class="exercises">
-		<h2>Exercises</h2>
 		{#each $chosenWorkout as exercise}
-		<p class="exercise">{exercise}</p>
+		<p>{exercise}</p>
 		{/each}
 	</div>
 	<hr />
@@ -171,7 +171,10 @@ hr {
 section {
 	display: grid;
 	place-items: center;
-	box-shadow: 0 0 10px var(--accent);
+	box-shadow: 0 0 3px var(--accent),
+				0 0 6px var(--accent),
+				0 0 9px var(--accent),
+				0 0 12px var(--accent);
 	background-color: var(--surface-1);
 	border-radius: var(--radius);
 }
@@ -180,7 +183,8 @@ article {
 	display: grid;
     place-items: center;
 	border-radius: var(--radius);
-	border: 1px solid var(--accent);
+	box-shadow: 0 0 3px var(--accent),
+				0 0 6px var(--accent);
 }
 
 .container {
@@ -188,10 +192,8 @@ article {
 }
 
 .exercises {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	min-height: 250px;
+	display: grid;
+	place-items: center;
 	border-radius: var(--radius);
   }
 
