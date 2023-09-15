@@ -42,7 +42,7 @@
 
 	async function resetPeriod() {
 		currentIndex = await setTween(0, finalWorkoutArray[0]);
-	};
+	}
 
 	// set current period when started, or reset when stopped
 	$: {
@@ -64,7 +64,7 @@
 		started.set(false);
 		await resetPeriod();
 		// reset totalDurationTween
-		totalDurationTween.set(0, {duration: 0});
+		totalDurationTween.set(0, { duration: 0 });
 		// reset currentIndex
 		currentIndex = 0;
 		// reset currentPeriod
@@ -111,12 +111,16 @@
 	<h3><span class="capitals">{workoutDisplay}</span> workout</h3>
 	<p>Duration: {formattedTotalDuration}</p>
 	{#each $chosenWorkout as exercise}
-		<p>{exercise}</p>
+		<p class="exercise">{exercise}</p>
 	{/each}
 
-	<WorkoutSelector bind:workoutDisplay />
-	<Button text="Start" on:click={setStarted} />
-	<Button text="Reset" on:click={reset} />
+	<div class="buttons">
+		<WorkoutSelector bind:workoutDisplay />
+		<div class="controls">
+			<Button text="Start" on:click={setStarted} />
+			<Button text="Reset" on:click={reset} />
+		</div>
+	</div>
 </main>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -124,5 +128,20 @@
 <style lang="postcss">
 	.capitals {
 		text-transform: capitalize;
+	}
+
+	main {
+		display: grid;
+		place-items: center;
+	}
+
+	.exercise {
+		margin: 0.5rem;
+	}
+
+	.buttons {
+		display: grid;
+		    place-items: center;
+			gap: 1rem;
 	}
 </style>

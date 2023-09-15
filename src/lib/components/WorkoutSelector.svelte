@@ -12,17 +12,29 @@
 
 	function getWorkoutOnClick(workout: string) {
 		const workoutLowerCase = workout.toLowerCase();
-		chosenWorkout.set(workoutExercises[workoutLowerCase])
+		chosenWorkout.set(workoutExercises[workoutLowerCase]);
 	}
 </script>
 
 <!-- html -->
-{#each Object.keys(workoutExercises) as workout}
-	<Button
-		text={workout}
-		on:click={() => {
-			setWorkout(workout);
-			getWorkoutOnClick(workout);
-		}}
-	/>
-{/each}
+<div class="buttons">
+	{#each Object.keys(workoutExercises) as workout}
+		<Button
+			text={workout}
+			on:click={() => {
+				setWorkout(workout);
+				getWorkoutOnClick(workout);
+			}}
+		/>
+	{/each}
+</div>
+
+<style>
+	.buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: center;
+		align-items: center;
+	}
+</style>

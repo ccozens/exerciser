@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
 	import ProgressBar from './ProgressBar.svelte';
+	import { started } from '$lib/stores';
 
 	// label, tween, tweenedDuration are passed in as the period object
 	export let label: string = 'exercise';
@@ -21,16 +21,21 @@
 	// create voice and voices vars
 	let voice: SpeechSynthesisVoice;
 	let voices: SpeechSynthesisVoice[] = [];
+
 	// get the list of voices
 	async function loadVoices() {
 		// fetch the available voices.
 		voices = speechSynthesis.getVoices();
+		voice = voices[50];
 		return voices;
 	}
-	onMount(async () => {
+
+	$: if ($started) {
+		loadVoices();
+	}
+	/* onMount(async () => {
 		await loadVoices();
-		voice = voices[50];
-	});
+	}); */
 
 	function speak(nextLabel: string) {
 		speechSynthesis.cancel();
@@ -46,3 +51,4 @@
 
 <p>{label}</p>
 <ProgressBar {tweenedProgress} {direction} />
+{voice}
