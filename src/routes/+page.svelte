@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { chosenWorkout, started, workoutInfo } from '$lib/stores';
-	import type { Workout } from '$lib/types';
+	import { finish } from '$lib/assets/';
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
@@ -27,7 +27,7 @@
 	// define current period
 	$: currentIndex = 0;
 	$: currentPeriod = finalWorkoutArray[currentIndex];
-	$: nextPeriod = finalWorkoutArray[currentIndex + 1];
+	$: nextPeriod = finish ?? finalWorkoutArray[currentIndex + 1];
 	$: nextLabel = nextPeriod.label;
 
 	$: if (currentIndex < finalWorkoutArray.length - 1) {
