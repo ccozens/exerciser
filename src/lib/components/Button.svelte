@@ -1,8 +1,5 @@
 <script lang="ts">
-    import { started } from "$lib/stores";
-
     export  let text: string = "";
-
 </script>
 
 <button on:click>{text}</button>
@@ -13,15 +10,15 @@
         background-color: var(--accent);
         color: var(--surface-1);
         border: none;
-        border-radius: 0.5rem;
+        border-radius: var(--radius);
         padding: 1rem 2rem;
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-size: 1.2rem;
+        font-weight: 600;
         cursor: pointer;
         transition: background-color 0.2s ease-in-out;
     }
 
-    button:hover {
+    button:hover, button:focus {
         background-color: var(--swatch-5);
     }
 </style>

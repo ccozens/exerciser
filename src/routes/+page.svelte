@@ -93,13 +93,18 @@
 
 	</heading>
 
+<div class="container">
 <article>
 
-	<h3><span class="capitals">{workoutDisplay}</span> workout</h3>
-	<p>Duration: {formattedTotalDuration}</p>
-	{#each $chosenWorkout as exercise}
+	<h2><span class="capitals">{workoutDisplay}</span> workout</h2>
+	<div class="exercises">
+		<h2>Exercises</h2>
+		{#each $chosenWorkout as exercise}
 		<p class="exercise">{exercise}</p>
-	{/each}
+		{/each}
+	</div>
+	<hr />
+	<p>Duration: {formattedTotalDuration}</p>
 
 	<div class="buttons">
 		<WorkoutSelector bind:workoutDisplay />
@@ -109,6 +114,7 @@
 		</div>
 	</div>
 </article>
+</div>
 	</section>
 </main>
 
@@ -143,25 +149,67 @@ main {
 	display: grid;
 	place-items: center;
 	height: 100vh;
-	background-color: red;
 }
 
 heading {
-	background-color: blue;
+	padding: 2rem;
 }
 
+h1 {
+	font-size: 3rem;
+}
+
+h2 {
+	font-size: 2rem;
+}
+
+hr {
+	width: 95%;
+	border: none;
+	border-top: 1px solid var(--accent);
+}
 section {
 	display: grid;
 	place-items: center;
-	background-color: green;
+	box-shadow: 0 0 10px var(--accent);
+	background-color: var(--surface-1);
+	border-radius: var(--radius);
 }
 
 article {
 	display: grid;
     place-items: center;
-	background-color: yellow;
-	padding: 10rem;
+	border-radius: var(--radius);
+	border: 1px solid var(--accent);
+}
+
+.container {
+	padding: 2rem 5rem;
+}
+
+.exercises {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-height: 250px;
+	border-radius: var(--radius);
   }
 
+  .capitals {
+	text-transform: capitalize;
+  }
+
+  .buttons {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	padding: 0 1rem 1rem 1rem;
+  }
+
+  .controls {
+	display: flex;
+	gap: 2rem;
+  }
 
 </style>

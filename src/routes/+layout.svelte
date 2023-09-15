@@ -27,10 +27,12 @@
 	--surface-1: var(--swatch-10);
 	--surface-2: var(--swatch-9);
 	--surface-3: var(--swatch-8);
+	--radius: 0.5rem;
 	}
 
 	:global(p) {
 		color: var(--text-1);
+		font-size: 1.5rem;
 	}
 
 	:global(h1, h2, h3) {
@@ -42,6 +44,6 @@
 	}
 
 	:global(body) {
-		background-color: var(--surface-1);
+		background-color: var(--surface-2);
 	}
 </style>
