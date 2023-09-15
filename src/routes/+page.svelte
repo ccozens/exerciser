@@ -86,7 +86,36 @@
 </script>
 
 <main>
-	{#if $started}
+
+	<section>
+	<heading>
+		<h1>Interval exerciser</h1>
+
+	</heading>
+
+<article>
+
+	<h3><span class="capitals">{workoutDisplay}</span> workout</h3>
+	<p>Duration: {formattedTotalDuration}</p>
+	{#each $chosenWorkout as exercise}
+		<p class="exercise">{exercise}</p>
+	{/each}
+
+	<div class="buttons">
+		<WorkoutSelector bind:workoutDisplay />
+		<div class="controls">
+			<Button text="Start" on:click={setStarted} />
+			<Button text="Reset" on:click={reset} />
+		</div>
+	</div>
+</article>
+	</section>
+</main>
+
+<svelte:window on:keydown={handleKeydown} />
+
+
+{#if $started}
 		<!-- display current exercise and progress bar -->
 		{#each finalWorkoutArray as period, index}
 			{#if index === currentIndex}
@@ -106,42 +135,33 @@
 		/>
 	{/if}
 
-	<h1>Interval exerciser</h1>
 
-	<h3><span class="capitals">{workoutDisplay}</span> workout</h3>
-	<p>Duration: {formattedTotalDuration}</p>
-	{#each $chosenWorkout as exercise}
-		<p class="exercise">{exercise}</p>
-	{/each}
-
-	<div class="buttons">
-		<WorkoutSelector bind:workoutDisplay />
-		<div class="controls">
-			<Button text="Start" on:click={setStarted} />
-			<Button text="Reset" on:click={reset} />
-		</div>
-	</div>
-</main>
-
-<svelte:window on:keydown={handleKeydown} />
 
 <style lang="postcss">
-	.capitals {
-		text-transform: capitalize;
-	}
 
-	main {
-		display: grid;
-		place-items: center;
-	}
+main {
+	display: grid;
+	place-items: center;
+	height: 100vh;
+	background-color: red;
+}
 
-	.exercise {
-		margin: 0.5rem;
-	}
+heading {
+	background-color: blue;
+}
 
-	.buttons {
-		display: grid;
-		    place-items: center;
-			gap: 1rem;
-	}
+section {
+	display: grid;
+	place-items: center;
+	background-color: green;
+}
+
+article {
+	display: grid;
+    place-items: center;
+	background-color: yellow;
+	padding: 10rem;
+  }
+
+
 </style>
