@@ -13,9 +13,9 @@
 
 	$: tweenedProgress = $tween / tweenedDuration;
 
-	/* let setNextLabel = '';
+	let setNextLabel = '';
 	// setNextLabel is nextLabel when tween is 3000ms from completion
-	$: setNextLabel = $tween - 3000 >= 0 ? nextLabel : ''; */
+	$: setNextLabel = $tween - 3000 >= 0 ? nextLabel : '';
 
 	// load voices
 	// create voice and voices vars
@@ -32,7 +32,6 @@
 		voice = voices[50];
 	});
 
-
 	function speak(nextLabel: string) {
 		speechSynthesis.cancel();
 		const utterance = new SpeechSynthesisUtterance(nextLabel);
@@ -40,14 +39,10 @@
 		speechSynthesis.speak(utterance);
 	}
 
-	/* $: if (setNextLabel && voice) {
+	$: if (setNextLabel && voice) {
 		speak(setNextLabel);
-	} */
-	$: if (tweenedProgress === 0.8) {
-		speak(nextLabel);
 	}
 </script>
 
 <p>{label}</p>
 <ProgressBar {tweenedProgress} {direction} />
-{nextLabel}
