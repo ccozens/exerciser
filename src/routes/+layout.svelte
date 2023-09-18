@@ -9,7 +9,7 @@
 
 <style>
 	:global(html) {
-	--swatch-1: oklch(96% 0.75 147);
+	--swatch-1: oklch(96% 0.05 147);
 	--swatch-2: oklch(90% 0.2 147);
 	--swatch-3: oklch(80% 0.2 147);
 	--swatch-4: oklch(86% 0.32 147);
