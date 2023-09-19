@@ -7,3 +7,5 @@ export * from './CreateWorkoutArray';
 export * from './SetTween';
 
 export * from './CreateFinalWorkoutArray';
+
+export * from './ClickOutside'

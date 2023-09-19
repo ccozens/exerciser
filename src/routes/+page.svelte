@@ -4,7 +4,7 @@
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
-	import { Button, Period, WorkoutSelector, ProgressBar } from '$lib/components/';
+	import { Button, Period, WorkoutSelector, ProgressBar, Modal } from '$lib/components/';
 
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
@@ -83,135 +83,128 @@
 			reset();
 		}
 	}
+
+	let isModalOpen = false;
 </script>
 
 <main>
-
 	<section>
-	<heading>
-		<h1>Interval exerciser</h1>
+		<heading>
+			<h1>Interval exerciser</h1>
+		</heading>
 
-	</heading>
+		<div class="container">
+			<article>
+				<h2><span class="capitals">{workoutDisplay}</span> workout</h2>
+				<hr />
+				<div class="exercises">
+					{#each $chosenWorkout as exercise}
+						<p>{exercise}</p>
+					{/each}
+				</div>
+				<hr />
+				<p>Duration: {formattedTotalDuration}</p>
 
-<div class="container">
-<article>
-
-	<h2><span class="capitals">{workoutDisplay}</span> workout</h2>
-	<hr />
-	<div class="exercises">
-		{#each $chosenWorkout as exercise}
-		<p>{exercise}</p>
-		{/each}
-	</div>
-	<hr />
-	<p>Duration: {formattedTotalDuration}</p>
-
-	<div class="buttons">
-		<WorkoutSelector bind:workoutDisplay />
-		<div class="controls">
-			<Button text="Start" on:click={setStarted} />
-			<Button text="Reset" on:click={reset} />
+				<div class="buttons">
+					<WorkoutSelector bind:workoutDisplay />
+					<div class="controls">
+						<Button text="Start" on:click={setStarted} />
+						<Button text="Reset" on:click={reset} />
+					</div>
+				</div>
+			</article>
 		</div>
-	</div>
-</article>
-</div>
 	</section>
+<button on:click={() => (isModalOpen = true)}>Open Modal</button>
+		<Modal {isModalOpen}>
+			<h1>Modal</h1>
+			<p>Modal content</p>
+		</Modal>
 </main>
 
 <svelte:window on:keydown={handleKeydown} />
 
-
 {#if $started}
-		<!-- display current exercise and progress bar -->
-		{#each finalWorkoutArray as period, index}
-			{#if index === currentIndex}
-				<Period {...period} {nextLabel} />
-			{/if}
-		{/each}
-		<!-- workout progress -->
-		<h4>Total progress</h4>
-		<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
+	<!-- display current exercise and progress bar -->
+	{#each finalWorkoutArray as period, index}
+		{#if index === currentIndex}
+			<Period {...period} {nextLabel} />
+		{/if}
+	{/each}
+	<!-- workout progress -->
+	<h4>Total progress</h4>
+	<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
 
-		<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
-		<ProgressBar
-			--wrapper-width="90vw"
-			--wrapper-height="5vh"
-			direction="width"
-			{tweenedProgress}
-		/>
-	{/if}
+	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
+	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh" direction="width" {tweenedProgress} />
+{/if}
 
 
 
 <style lang="postcss">
+	main {
+		display: grid;
+		place-items: center;
+		height: 100vh;
+	}
 
-main {
-	display: grid;
-	place-items: center;
-	height: 100vh;
-}
+	heading {
+		padding: 2rem;
+	}
 
-heading {
-	padding: 2rem;
-}
+	h1 {
+		font-size: 3rem;
+	}
 
-h1 {
-	font-size: 3rem;
-}
+	h2 {
+		font-size: 2rem;
+	}
 
-h2 {
-	font-size: 2rem;
-}
+	hr {
+		width: 95%;
+		border: none;
+		border-top: 1px solid var(--accent);
+	}
+	section {
+		display: grid;
+		place-items: center;
+		box-shadow: 0 0 3px var(--accent), 0 0 6px var(--accent), 0 0 9px var(--accent),
+			0 0 12px var(--accent);
+		background-color: var(--surface-1);
+		border-radius: var(--radius);
+	}
 
-hr {
-	width: 95%;
-	border: none;
-	border-top: 1px solid var(--accent);
-}
-section {
-	display: grid;
-	place-items: center;
-	box-shadow: 0 0 3px var(--accent),
-				0 0 6px var(--accent),
-				0 0 9px var(--accent),
-				0 0 12px var(--accent);
-	background-color: var(--surface-1);
-	border-radius: var(--radius);
-}
+	article {
+		display: grid;
+		place-items: center;
+		border-radius: var(--radius);
+		box-shadow: 0 0 3px var(--accent), 0 0 6px var(--accent);
+	}
 
-article {
-	display: grid;
-    place-items: center;
-	border-radius: var(--radius);
-	box-shadow: 0 0 3px var(--accent),
-				0 0 6px var(--accent);
-}
+	.container {
+		padding: 2rem 5rem;
+	}
 
-.container {
-	padding: 2rem 5rem;
-}
+	.exercises {
+		display: grid;
+		place-items: center;
+		border-radius: var(--radius);
+	}
 
-.exercises {
-	display: grid;
-	place-items: center;
-	border-radius: var(--radius);
-  }
+	.capitals {
+		text-transform: capitalize;
+	}
 
-  .capitals {
-	text-transform: capitalize;
-  }
+	.buttons {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		padding: 0 1rem 1rem 1rem;
+	}
 
-  .buttons {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 1rem;
-	padding: 0 1rem 1rem 1rem;
-  }
-
-  .controls {
-	display: flex;
-	gap: 2rem;
-  }
-
+	.controls {
+		display: flex;
+		gap: 2rem;
+	}
 </style>
