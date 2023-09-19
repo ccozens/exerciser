@@ -10,13 +10,18 @@
 	function closeModal() {
 		isModalOpen = false;
 	}
+
+	$: clickOutsideProps = {
+		'on:click-outside': closeModal,
+		class: 'modal-wrapper'
+	};
 </script>
 
 {#if isModalOpen}
 	<Portal>
 		<div
 			use:clickOutside
-			on:click-outside={closeModal}
+			{...clickOutsideProps}
 			class="modal-wrapper"
 			transition:fly={{ opacity: 0, y: 100 }}
 		>
@@ -61,7 +66,7 @@
 		border: none;
 		background-color: transparent;
 		cursor: pointer;
-		box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.20);
+		box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.2);
 		border-radius: 0.5rem;
 	}
 </style>
