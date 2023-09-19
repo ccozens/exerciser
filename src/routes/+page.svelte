@@ -57,11 +57,14 @@
 	// start workout
 	function setStarted() {
 		started.set(true);
+		isModalOpen = true;
 	}
 	// reset workout
 	async function reset() {
 		// set started to false
 		started.set(false);
+		// close modal
+		isModalOpen = false;
 		await resetPeriod();
 		// reset totalDurationTween
 		totalDurationTween.set(0, { duration: 0 });
@@ -84,7 +87,7 @@
 		}
 	}
 
-	let isModalOpen = true;
+	let isModalOpen = false;
 </script>
 
 <main>
@@ -115,30 +118,31 @@
 			</article>
 		</div>
 	</section>
-		<Modal {isModalOpen}>
-			<h1>Modal</h1>
-			<p>Modal content</p>
-		</Modal>
 </main>
 
 <svelte:window on:keydown={handleKeydown} />
 
 {#if $started}
-	<!-- display current exercise and progress bar -->
-	{#each finalWorkoutArray as period, index}
-		{#if index === currentIndex}
-			<Period {...period} {nextLabel} />
-		{/if}
-	{/each}
-	<!-- workout progress -->
-	<h4>Total progress</h4>
-	<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
+	<Modal {isModalOpen}>
+		<!-- display current exercise and progress bar -->
+		{#each finalWorkoutArray as period, index}
+			{#if index === currentIndex}
+				<Period {...period} {nextLabel} />
+			{/if}
+		{/each}
+		<!-- workout progress -->
+		<h4>Total progress</h4>
+		<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
 
-	<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
-	<ProgressBar --wrapper-width="90vw" --wrapper-height="5vh" direction="width" {tweenedProgress} />
+		<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
+		<ProgressBar
+			--wrapper-width="90vw"
+			--wrapper-height="5vh"
+			direction="width"
+			{tweenedProgress}
+		/>
+	</Modal>
 {/if}
-
-
 
 <style lang="postcss">
 	main {
