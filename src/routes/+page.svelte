@@ -84,7 +84,7 @@
 		}
 	}
 
-	let isModalOpen = false;
+	let isModalOpen = true;
 </script>
 
 <main>
@@ -115,7 +115,6 @@
 			</article>
 		</div>
 	</section>
-<button on:click={() => (isModalOpen = true)}>Open Modal</button>
 		<Modal {isModalOpen}>
 			<h1>Modal</h1>
 			<p>Modal content</p>

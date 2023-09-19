@@ -26,7 +26,6 @@
 			transition:fly={{ opacity: 0, y: 100 }}
 		>
 			<slot />
-			<button class="close-btn" on:click={closeModal} aria-label="Close Modal Box">Close</button>
 		</div>
 		{#if background}
 			<div on:click={closeModal} transition:fade class="background" />
@@ -38,15 +37,15 @@
 	.modal-wrapper {
 		position: fixed;
 		inset: 100px 0 0;
-		background-color: white;
+		background-color: var(--surface-1);
 		min-width: 320px;
 		max-width: 530px;
 		margin: 0 auto;
 		width: 100%;
 		max-height: 250px;
 		padding: 2rem;
-		border-radius: 0.5rem;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+		border-radius: var(--radius);
+		box-shadow: 0 0 10px var(--accent);
 		z-index: 1000;
 	}
 
@@ -58,15 +57,4 @@
 		cursor: pointer;
 	}
 
-	.close-btn {
-		position: absolute;
-		top: 0;
-		right: 0;
-		padding: 0.5rem;
-		border: none;
-		background-color: transparent;
-		cursor: pointer;
-		box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.2);
-		border-radius: 0.5rem;
-	}
 </style>
