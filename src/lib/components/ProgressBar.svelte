@@ -29,11 +29,11 @@
 		`--height:${height}; --width:${width}; --gradientDirection:${gradientDirection};` as string;
 </script>
 
-<div class="flex-wrapper">
-	<div class="progress-wrapper">
-		<div class="progress-bar" style={cssVarStyles} />
-	</div>
+<!-- <div class="flex-wrapper"> -->
+<div class="progress-wrapper">
+	<div class="progress-bar" style={cssVarStyles} />
 </div>
+<!-- </div> -->
 
 <style>
 	:root {
@@ -43,11 +43,21 @@
 		--gradientDirection: inherit;
 	}
 
+	/* .flex-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		width: var(--wrapper-width, 30vw);
+		height: var(--wrapper-height, 20vh);
+	} */
+
 	.progress-bar {
 		width: var(--width, 0%);
 		height: var(--height, 0%);
-		border-radius: 10px;
 		transition-property: var(--transition-property);
+		border-radius: var(--radius);
 		transition-timing-function: linear;
 		background: linear-gradient(
 			var(--gradientDirection),
@@ -58,10 +68,10 @@
 	}
 
 	.progress-wrapper {
-		width: var(--wrapper-width, 30vw);
-		height: var(--wrapper-height, 20vh);
+		width: 100%;
+		height: 90%;
 		background-color: #ccc;
-		border-radius: 10px;
+		border-radius: var(--radius);
 		overflow: hidden;
 	}
 </style>

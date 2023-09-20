@@ -36,14 +36,12 @@
 <style>
 	.modal-wrapper {
 		position: fixed;
-		inset: 100px 0 0;
+		inset: 5vh 0 0;
 		background-color: var(--surface-1);
-		min-width: 320px;
-		max-width: 530px;
+		width: 80vw;
+		height: 90vh;
 		margin: 0 auto;
-		width: 100%;
-		max-height: 250px;
-		padding: 2rem;
+		padding: 1.5rem 2.5rem 3rem 2.5rem;
 		border-radius: var(--radius);
 		box-shadow: 0 0 10px var(--accent);
 		z-index: 1000;
@@ -57,4 +55,17 @@
 		cursor: pointer;
 	}
 
+	@media (min-width: 700px) {
+		.modal-wrapper {
+			height: 85vh;
+		}
+	}
+	@media (min-width: 1000px) {
+		.modal-wrapper {
+			inset: 100px 0 0;
+			width: 35vw;
+			height: 40vh;
+            padding: 3rem 3rem 5rem 3rem;
+		}
+	}
 </style>

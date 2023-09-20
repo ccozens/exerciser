@@ -10,6 +10,8 @@
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
 	// define total duration
 	$: totalDuration = $workoutInfo.totalDuration;
+	// number of periods
+	$: numberOfPeriods = finalWorkoutArray.length;
 
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
@@ -30,7 +32,7 @@
 	$: nextPeriod = finish ?? finalWorkoutArray[currentIndex + 1];
 	$: nextLabel = nextPeriod.label;
 
-	$: if (currentIndex < finalWorkoutArray.length - 1) {
+	$: if (currentIndex < numberOfPeriods - 1) {
 		nextPeriod = finalWorkoutArray[currentIndex + 1];
 		nextLabel = nextPeriod.label;
 	}
@@ -46,7 +48,7 @@
 
 	// set current period when started, or reset when stopped
 	$: {
-		if ($started && currentPeriod && currentIndex >= 0 && currentIndex < finalWorkoutArray.length) {
+		if ($started && currentPeriod && currentIndex >= 0 && currentIndex < numberOfPeriods) {
 			setPeriod();
 		}
 		if ($started && !currentPeriod) {
@@ -131,16 +133,14 @@
 			{/if}
 		{/each}
 		<!-- workout progress -->
-		<h4>Total progress</h4>
-		<p>{formattedCurrentTime} / {formattedTotalDuration}</p>
-
-		<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
-		<ProgressBar
-			--wrapper-width="90vw"
-			--wrapper-height="5vh"
-			direction="width"
-			{tweenedProgress}
-		/>
+			<p class="modal-progress">{currentIndex+1} / {numberOfPeriods/2}</p>
+			<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
+			<!-- <ProgressBar
+				--wrapper-width="100%"
+				--wrapper-height="5%"
+				direction="width"
+				{tweenedProgress}
+			/> -->
 	</Modal>
 {/if}
 
@@ -209,5 +209,9 @@
 	.controls {
 		display: flex;
 		gap: 2rem;
+	}
+
+	.modal-progress {
+		text-align: center;
 	}
 </style>

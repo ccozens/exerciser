@@ -49,6 +49,13 @@
 	}
 </script>
 
-<p>{label}</p>
+<p>{label === 'preTimer' ? 'Get ready...' : label}</p>
 <ProgressBar {tweenedProgress} {direction} />
 {voice}
+
+<style>
+	p {
+		text-align: center;
+	}
+</style>
+```
