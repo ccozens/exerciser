@@ -5,15 +5,12 @@
 
 	export let workoutDisplay: string = 'isometric';
 
-
 	function onSelectChange(event: Event) {
-		console.log(event);
 		const target = event.target as HTMLSelectElement;
 		const workout = target.value;
 		const workoutLowerCase = workout.toLowerCase();
 		chosenWorkout.set(workoutExercises[workoutLowerCase]);
 	}
-
 </script>
 
 <!-- html -->
@@ -39,9 +36,10 @@
 		transition: all 0.2s ease-in-out;
 	}
 
-	select:hover, select:focus {
-        background-color: var(--surface-1);
-        color: var(--text-2);
-        border: solid 1px var(--accent);
-    }
+	select:hover,
+	select:focus {
+		background-color: var(--surface-1);
+		color: var(--text-2);
+		border: solid 1px var(--accent);
+	}
 </style>

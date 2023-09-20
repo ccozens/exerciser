@@ -4,7 +4,7 @@
 	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
-	import { Button, Period, WorkoutSelector, ProgressBar, Modal } from '$lib/components/';
+	import { Button, Period, WorkoutSelector, GithubCorner, Modal } from '$lib/components/';
 
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
@@ -89,7 +89,7 @@
 
 	let isModalOpen = false;
 </script>
-
+<GithubCorner />
 <main>
 	<section>
 		<heading>
@@ -148,12 +148,16 @@
 		height: 100vh;
 	}
 
+	heading {
+		padding: 2rem 0rem 0rem 0rem;
+	}
 	h1 {
-		font-size: 3rem;
+		font-size: 2.5rem;
 	}
 
 	h2 {
 		font-size: 2rem;
+		text-align: center;
 	}
 
 	hr {
@@ -219,7 +223,7 @@
 
 		section {
 			box-shadow: 0 0 3px var(--accent), 0 0 6px var(--accent), 0 0 9px var(--accent),
-			0 0 12px var(--accent);
+				0 0 12px var(--accent);
 		}
 	}
 </style>
