@@ -9,16 +9,16 @@
 
 <style>
 	:global(html) {
-	--swatch-1: oklch(96% 0.05 147);
+	--swatch-1: oklch(96% 0.2 147);
 	--swatch-2: oklch(90% 0.2 147);
-	--swatch-3: oklch(80% 0.2 147);
+	--swatch-3: oklch(88% 0.24 147);
 	--swatch-4: oklch(86% 0.32 147);
 	--swatch-5: oklch(77% 0.31 147);
 	--swatch-6: oklch(51% 0.2 147);
 	--swatch-7: oklch(39.5% 0.16 147);
 	--swatch-8: oklch(25% 0.1 147);
-	--swatch-9: oklch(16% 0.06 147);
-	--swatch-10: oklch(17% 0.03 147);
+	--swatch-9: oklch(20% 0.08 147);
+	--swatch-10: oklch(16% 0.06 147);
 
 	--text-1: var(--swatch-1);
 	--text-2: var(--swatch-2);
