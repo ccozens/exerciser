@@ -99,7 +99,7 @@
 				<hr />
 				<div class="exercises">
 					{#each $chosenWorkout.exercises as exercise}
-						<p>{exercise}</p>
+						<input value={exercise}/>
 					{/each}
 				</div>
 				<hr />
@@ -168,6 +168,22 @@
 		border-radius: var(--radius);
 		box-shadow: 0 0 3px var(--accent), 0 0 6px var(--accent);
 		padding: 1rem;
+	}
+
+	input {
+		border: none;
+		border-radius: var(--radius);
+		font-size: 1.5rem;
+		background-color: var(--surface-1);
+		color: var(--text-1);
+		border: solid 1px transparent;
+		text-align: center;
+		transition: all 0.2s ease-in-out;
+	}
+
+	input:hover, input:focus, input:active {
+		color: var(--text-2);
+		border: solid 1px var(--accent);
 	}
 
 	.container {

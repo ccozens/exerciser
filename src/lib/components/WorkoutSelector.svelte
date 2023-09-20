@@ -3,6 +3,8 @@
 	import { workoutExercises } from '$lib/assets';
 	import { chosenWorkout } from '$lib/stores';
 
+	let selectedWorkout = $chosenWorkout.name;
+
 	function onSelectChange(event: Event) {
 		const target = event.target as HTMLSelectElement;
 		const workout = target.value;
@@ -15,8 +17,7 @@
 </script>
 
 <!-- html -->
-
-<select on:change={onSelectChange}>
+<select bind:value={selectedWorkout} on:change={onSelectChange}>
 	{#each workoutExercises as { name }}
 		<option value={name}>{name}</option>
 	{/each}
