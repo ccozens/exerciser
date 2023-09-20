@@ -46,7 +46,15 @@
 			setPeriod();
 		}
 		if ($started && !currentPeriod) {
-			reset(started, isModalOpen, totalDurationTween, currentIndex, currentPeriod, nextPeriod, finalWorkoutArray);
+			reset(
+				started,
+				isModalOpen,
+				totalDurationTween,
+				currentIndex,
+				currentPeriod,
+				nextPeriod,
+				finalWorkoutArray
+			);
 		}
 	}
 
@@ -62,7 +70,15 @@
 			setStarted();
 		}
 		if (event.key === 'Escape') {
-			reset(started, isModalOpen, totalDurationTween, currentIndex, currentPeriod, nextPeriod, finalWorkoutArray);
+			reset(
+				started,
+				isModalOpen,
+				totalDurationTween,
+				currentIndex,
+				currentPeriod,
+				nextPeriod,
+				finalWorkoutArray
+			);
 		}
 	}
 
@@ -192,6 +208,11 @@
 		section {
 			box-shadow: 0 0 3px var(--accent), 0 0 6px var(--accent), 0 0 9px var(--accent),
 				0 0 12px var(--accent);
+			min-width: 31rem;
+		}
+
+		article {
+			width: 25rem;
 		}
 	}
 </style>
