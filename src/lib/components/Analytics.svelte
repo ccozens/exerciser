@@ -20,6 +20,7 @@
 	<script async {src}>
 	</script>
 	<script>
+		const MEASUREMENT_ID = 'G-B9PS2TGF8H';
 		window.dataLayer = window.dataLayer || [];
 
 		function gtag() {
