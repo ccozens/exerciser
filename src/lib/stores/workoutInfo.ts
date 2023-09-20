@@ -11,8 +11,8 @@ export const workoutInfo = derived(
 		// create final workout array
 		const finalWorkoutArray = createFinalWorkoutArray(
 			$chosenWorkout,
-			$restDuration,
 			$workDuration,
+			$restDuration,
 			$preWorkoutDuration
 		);
 		// calculate total duration of workout (in ms)
