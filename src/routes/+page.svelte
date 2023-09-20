@@ -133,9 +133,11 @@
 			{/if}
 		{/each}
 		<!-- workout progress -->
-			<p class="modal-progress">{currentIndex+1} / {numberOfPeriods/2}</p>
-			<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
-			<!-- <ProgressBar
+		{#if nextLabel === 'rest'}
+			<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
+		{/if}
+		<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
+		<!-- <ProgressBar
 				--wrapper-width="100%"
 				--wrapper-height="5%"
 				direction="width"
@@ -149,10 +151,6 @@
 		display: grid;
 		place-items: center;
 		height: 100vh;
-	}
-
-	heading {
-		padding: 2rem;
 	}
 
 	h1 {
@@ -217,5 +215,11 @@
 
 	.duration {
 		font-size: 1.3rem;
+	}
+
+	@media (min-width: 1000px) {
+		heading {
+			padding: 2rem;
+		}
 	}
 </style>
