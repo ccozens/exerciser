@@ -15,10 +15,8 @@
 
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
-	$: tweenedProgress = $totalDurationTween / totalDuration;
 
 	// define formatted total duration
-	$: formattedCurrentTime = formatTime($totalDurationTween);
 	$: formattedTotalDuration = formatTime(totalDuration);
 
 	// set totalDurationTween duration to totalDuration when started
@@ -112,10 +110,7 @@
 
 				<div class="buttons">
 					<WorkoutSelector bind:workoutDisplay />
-					<div class="controls">
-						<Button text="Start" on:click={setStarted} />
-						<Button text="Reset" on:click={reset} />
-					</div>
+					<Button text="Start" on:click={setStarted} />
 				</div>
 			</article>
 		</div>

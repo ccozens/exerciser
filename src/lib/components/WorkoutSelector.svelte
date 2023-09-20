@@ -34,6 +34,14 @@
 		background-color: var(--surface-1);
 		color: var(--text-1);
 		box-shadow: 0 0 1px var(--accent);
+		border: solid 1px transparent;
 		text-align: center;
+		transition: all 0.2s ease-in-out;
 	}
+
+	select:hover, button:focus {
+        background-color: var(--surface-1);
+        color: var(--text-2);
+        border: solid 1px var(--accent);
+    }
 </style>

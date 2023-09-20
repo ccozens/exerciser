@@ -15,10 +15,15 @@
         font-size: 1.2rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        width: 100%;
+        height: 4rem;
     }
 
     button:hover, button:focus {
-        background-color: var(--swatch-5);
+        background-color: var(--surface-1);
+        color: var(--text-2);
+        border: solid 1px var(--accent);
+        scale: 1.2;
     }
 </style>
