@@ -17,7 +17,7 @@
 		border: none;
 		border-radius: var(--radius);
 		padding: 0.5rem;
-		margin: 0.5rem;
+		margin-top: 0.5rem;
 		font-size: 1.5rem;
 		background-color: var(--surface-1);
 		color: var(--text-1);

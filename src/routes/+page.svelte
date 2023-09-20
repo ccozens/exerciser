@@ -4,7 +4,14 @@
 	import { formatTime, reset, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
-	import { Button, Period, WorkoutSelector, GithubCorner, Modal } from '$lib/components/';
+	import {
+		Button,
+		Period,
+		WorkoutSelector,
+		GithubCorner,
+		Modal,
+		WorkoutDurationEditor
+	} from '$lib/components/';
 
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
@@ -99,13 +106,14 @@
 				<hr />
 				<div class="exercises">
 					{#each $chosenWorkout.exercises as exercise}
-						<input value={exercise}/>
+						<input value={exercise} />
 					{/each}
 				</div>
 				<hr />
 
 				<div class="buttons">
 					<WorkoutSelector />
+					<WorkoutDurationEditor />
 					<Button text="Start" on:click={setStarted} />
 				</div>
 			</article>
@@ -181,7 +189,9 @@
 		transition: all 0.2s ease-in-out;
 	}
 
-	input:hover, input:focus, input:active {
+	input:hover,
+	input:focus,
+	input:active {
 		color: var(--text-2);
 		border: solid 1px var(--accent);
 	}
