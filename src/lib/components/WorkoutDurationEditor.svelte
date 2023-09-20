@@ -1,22 +1,24 @@
 <!-- script -->
 <script lang="ts">
-	import { workDuration, restDuration, chosenWorkout } from '$lib/stores';
+	import { workDuration, restDuration } from '$lib/stores';
 </script>
 
 <!-- html -->
 <div class="durationEditor">
-	<label for="workDuration">Work:</label>
-	<input type="number" min="1" max="120" step="1" bind:value={$workDuration} />
-	<label for="restDuration">Rest:</label>
-	<input type="number" min="1" max="30" step="1" bind:value={$restDuration} />
+		<label for="workDuration">Work:</label>
+		<input type="number" min="1" max="120" step="1" bind:value={$workDuration} />
+		<label for="restDuration">Rest:</label>
+		<input type="number" min="1" max="30" step="1" bind:value={$restDuration} />
 </div>
 
 <style>
 	.durationEditor {
 		margin: 0 0.5rem;
-        box-shadow: 0 0 1px var(--accent);
-        border-radius: var(--radius);
-        padding: 0.5rem;
+		box-shadow: 0 0 1px var(--accent);
+		border-radius: var(--radius);
+		padding: 0.5rem;
+		display: grid;
+        grid-template-columns: 1fr 1fr;
 	}
 	label {
 		font-size: 1.5rem;

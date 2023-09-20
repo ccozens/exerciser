@@ -2,6 +2,8 @@
 <script lang="ts">
 	import { workoutExercises } from '$lib/assets';
 	import { chosenWorkout } from '$lib/stores';
+
+	$: console.log($chosenWorkout);
 </script>
 
 <!-- html -->
