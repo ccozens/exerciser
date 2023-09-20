@@ -108,7 +108,7 @@
 					{/each}
 				</div>
 				<hr />
-				<p>Duration: {formattedTotalDuration}</p>
+				<p class="duration">{formattedTotalDuration}</p>
 
 				<div class="buttons">
 					<WorkoutSelector bind:workoutDisplay />
@@ -213,5 +213,9 @@
 
 	.modal-progress {
 		text-align: center;
+	}
+
+	.duration {
+		font-size: 1.3rem;
 	}
 </style>
