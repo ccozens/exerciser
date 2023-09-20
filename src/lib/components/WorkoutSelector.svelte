@@ -3,12 +3,22 @@
 	import { workoutExercises } from '$lib/assets';
 	import { chosenWorkout } from '$lib/stores';
 
-	$: console.log($chosenWorkout);
+	let selectedWorkout = $chosenWorkout.name;
+
+	function onSelectChange(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		const workout = target.value;
+		const workoutLowerCase = workout.toLowerCase();
+		const workoutIndex = workoutExercises.findIndex(
+			(exercise) => exercise.name.toLowerCase() === workoutLowerCase
+		);
+		chosenWorkout.set(workoutExercises[workoutIndex]);
+	}
+
 </script>
 
 <!-- html -->
-
-<select bind:value={$chosenWorkout.name}>
+<select bind:value={selectedWorkout} on:change={onSelectChange}>
 	{#each workoutExercises as { name }}
 		<option value={name}>{name}</option>
 	{/each}
