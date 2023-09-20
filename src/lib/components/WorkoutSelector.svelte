@@ -3,21 +3,22 @@
 	import { workoutExercises } from '$lib/assets';
 	import { chosenWorkout } from '$lib/stores';
 
-	export let workoutDisplay: string = 'isometric';
-
 	function onSelectChange(event: Event) {
 		const target = event.target as HTMLSelectElement;
 		const workout = target.value;
 		const workoutLowerCase = workout.toLowerCase();
-		chosenWorkout.set(workoutExercises[workoutLowerCase]);
+		const workoutIndex = workoutExercises.findIndex(
+			(exercise) => exercise.name.toLowerCase() === workoutLowerCase
+		);
+		chosenWorkout.set(workoutExercises[workoutIndex]);
 	}
 </script>
 
 <!-- html -->
 
-<select bind:value={workoutDisplay} on:change={onSelectChange}>
-	{#each Object.keys(workoutExercises) as workout}
-		<option value={workout}>{workout}</option>
+<select on:change={onSelectChange}>
+	{#each workoutExercises as { name }}
+		<option value={name}>{name}</option>
 	{/each}
 </select>
 

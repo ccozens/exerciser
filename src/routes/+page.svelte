@@ -56,8 +56,6 @@
 		isModalOpen = true;
 	}
 
-	$: workoutDisplay = 'isometric';
-
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key !== ' ' && event.key !== 'Escape') return;
 		if (event.key === ' ') {
@@ -80,18 +78,18 @@
 
 		<div class="container">
 			<article>
-				<h2><span class="capitals">{workoutDisplay}</span> workout</h2>
+				<h2><span class="capitals">{$chosenWorkout.name}</span> workout</h2>
 				<p class="duration">{formattedTotalDuration}</p>
 				<hr />
 				<div class="exercises">
-					{#each $chosenWorkout as exercise}
+					{#each $chosenWorkout.exercises as exercise}
 						<p>{exercise}</p>
 					{/each}
 				</div>
 				<hr />
 
 				<div class="buttons">
-					<WorkoutSelector bind:workoutDisplay />
+					<WorkoutSelector />
 					<Button text="Start" on:click={setStarted} />
 				</div>
 			</article>

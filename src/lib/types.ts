@@ -7,5 +7,6 @@ export interface Workout {
 }
 
 export interface WorkoutExercises {
-	[key: string]: string[];
+	name: string;
+	exercises: string[];
 }
