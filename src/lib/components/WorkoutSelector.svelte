@@ -17,24 +17,23 @@
 </script>
 
 <!-- html -->
-<div class="buttons">
+
+<select bind:value={workoutDisplay}>
 	{#each Object.keys(workoutExercises) as workout}
-		<Button
-			text={workout}
-			on:click={() => {
-				setWorkout(workout);
-				getWorkoutOnClick(workout);
-			}}
-		/>
+		<option value={workout}>{workout}</option>
 	{/each}
-</div>
+</select>
 
 <style>
-	.buttons {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		justify-content: center;
-		align-items: center;
+	select {
+		border: none;
+		border-radius: var(--radius);
+		padding: 0.5rem;
+		margin: 0.5rem;
+		font-size: 1.5rem;
+		background-color: var(--surface-1);
+		color: var(--text-1);
+		box-shadow: 0 0 1px var(--accent);
+		text-align: center;
 	}
 </style>

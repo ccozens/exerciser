@@ -101,6 +101,7 @@
 		<div class="container">
 			<article>
 				<h2><span class="capitals">{workoutDisplay}</span> workout</h2>
+				<p class="duration">{formattedTotalDuration}</p>
 				<hr />
 				<div class="exercises">
 					{#each $chosenWorkout as exercise}
@@ -108,7 +109,6 @@
 					{/each}
 				</div>
 				<hr />
-				<p class="duration">{formattedTotalDuration}</p>
 
 				<div class="buttons">
 					<WorkoutSelector bind:workoutDisplay />
@@ -165,6 +165,7 @@
 		width: 95%;
 		border: none;
 		border-top: 1px solid var(--accent);
+		margin: 0.3rem;
 	}
 	section {
 		display: grid;
@@ -214,7 +215,7 @@
 	}
 
 	.duration {
-		font-size: 1.3rem;
+		font-size: 1.2rem;
 	}
 
 	@media (min-width: 1000px) {
