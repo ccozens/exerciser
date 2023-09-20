@@ -61,16 +61,15 @@
 		transition-timing-function: linear;
 		background: linear-gradient(
 			var(--gradientDirection),
-			rgba(2, 0, 36, 1) 0%,
-			rgba(9, 9, 121, 1) 35%,
-			rgba(0, 212, 255, 1) 100%
+			oklch(90% 0.3 200),
+			oklch(87% 0.2 90)
 		);
 	}
 
 	.progress-wrapper {
 		width: 100%;
 		height: 90%;
-		background-color: #ccc;
+		background-color: oklch(25% 0.1 147 / 0.5); /* swatch 8 with 50% transparency */
 		border-radius: var(--radius);
 		overflow: hidden;
 	}
