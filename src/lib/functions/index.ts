@@ -9,3 +9,5 @@ export * from './SetTween';
 export * from './CreateFinalWorkoutArray';
 
 export * from './ClickOutside'
+
+export * from './Reset';

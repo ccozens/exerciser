@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { chosenWorkout, started, workoutInfo } from '$lib/stores';
 	import { finish } from '$lib/assets/';
-	import { formatTime, createFinalWorkoutArray, setTween } from '$lib/functions';
+	import { formatTime, reset, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
 	import { Button, Period, WorkoutSelector, GithubCorner, Modal } from '$lib/components/';
@@ -40,17 +40,13 @@
 		currentIndex = await setTween(currentIndex, currentPeriod);
 	}
 
-	async function resetPeriod() {
-		currentIndex = await setTween(0, finalWorkoutArray[0]);
-	}
-
 	// set current period when started, or reset when stopped
 	$: {
 		if ($started && currentPeriod && currentIndex >= 0 && currentIndex < numberOfPeriods) {
 			setPeriod();
 		}
 		if ($started && !currentPeriod) {
-			reset();
+			reset(started, isModalOpen, totalDurationTween, currentIndex, currentPeriod, nextPeriod, finalWorkoutArray);
 		}
 	}
 
@@ -59,22 +55,7 @@
 		started.set(true);
 		isModalOpen = true;
 	}
-	// reset workout
-	async function reset() {
-		// set started to false
-		started.set(false);
-		// close modal
-		isModalOpen = false;
-		await resetPeriod();
-		// reset totalDurationTween
-		totalDurationTween.set(0, { duration: 0 });
-		// reset currentIndex
-		currentIndex = 0;
-		// reset currentPeriod
-		currentPeriod = finalWorkoutArray[currentIndex];
-		// reset nextPeriod
-		nextPeriod = finalWorkoutArray[currentIndex + 1];
-	}
+
 	$: workoutDisplay = 'isometric';
 
 	function handleKeydown(event: KeyboardEvent) {
@@ -83,7 +64,7 @@
 			setStarted();
 		}
 		if (event.key === 'Escape') {
-			reset();
+			reset(started, isModalOpen, totalDurationTween, currentIndex, currentPeriod, nextPeriod, finalWorkoutArray);
 		}
 	}
 
@@ -132,13 +113,6 @@
 		{#if nextLabel === 'rest'}
 			<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
 		{/if}
-		<!-- rotated so progress bar goes right way, meaning width is height and vice versa -->
-		<!-- <ProgressBar
-				--wrapper-width="100%"
-				--wrapper-height="5%"
-				direction="width"
-				{tweenedProgress}
-			/> -->
 	</Modal>
 {/if}
 
@@ -202,11 +176,6 @@
 		align-items: center;
 		gap: 1rem;
 		padding: 0 1rem 1rem 1rem;
-	}
-
-	.controls {
-		display: flex;
-		gap: 2rem;
 	}
 
 	.modal-progress {
