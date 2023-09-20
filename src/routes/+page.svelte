@@ -170,8 +170,6 @@
 	section {
 		display: grid;
 		place-items: center;
-		box-shadow: 0 0 3px var(--accent), 0 0 6px var(--accent), 0 0 9px var(--accent),
-			0 0 12px var(--accent);
 		background-color: var(--surface-1);
 		border-radius: var(--radius);
 	}
@@ -181,6 +179,7 @@
 		place-items: center;
 		border-radius: var(--radius);
 		box-shadow: 0 0 3px var(--accent), 0 0 6px var(--accent);
+		padding: 1rem;
 	}
 
 	.container {
@@ -220,7 +219,12 @@
 
 	@media (min-width: 1000px) {
 		heading {
-			padding: 2rem;
+			padding: 2rem 2rem 0rem 2rem;
+		}
+
+		section {
+			box-shadow: 0 0 3px var(--accent), 0 0 6px var(--accent), 0 0 9px var(--accent),
+			0 0 12px var(--accent);
 		}
 	}
 </style>
