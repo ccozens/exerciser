@@ -3,6 +3,7 @@
 	import type { Tweened } from 'svelte/motion';
 	import ProgressBar from './ProgressBar.svelte';
 	import { started } from '$lib/stores';
+	import { speak, loadVoices } from '$lib/functions';
 
 	// label, tween, tweenedDuration are passed in as the period object
 	export let label: string = 'exercise';
@@ -15,34 +16,21 @@
 
 	let setNextLabel = '';
 	// setNextLabel is nextLabel when tween is 3000ms from completion
-	$: setNextLabel = $tween - 3000 >= 0 ? nextLabel : '';
+	$: setNextLabel = tweenedDuration - $tween <= 3000 ? nextLabel : '';
 
 	// load voices
 	// create voice and voices vars
 	let voice: SpeechSynthesisVoice;
 	let voices: SpeechSynthesisVoice[] = [];
 
-	// get the list of voices
-	async function loadVoices() {
-		// fetch the available voices.
-		voices = speechSynthesis.getVoices();
-		voice = voices[50];
-		return voices;
-	}
-
 	$: if ($started) {
-		loadVoices();
-	}
-
-	function speak(nextLabel: string) {
-		speechSynthesis.cancel();
-		const utterance = new SpeechSynthesisUtterance(nextLabel);
-		utterance.voice = voice;
-		speechSynthesis.speak(utterance);
+		loadVoices(voices).then((voices) => {
+			voice = voices[50];
+		});
 	}
 
 	$: if (setNextLabel && voice) {
-		speak(setNextLabel);
+		speak(setNextLabel, voice);
 	}
 </script>
 

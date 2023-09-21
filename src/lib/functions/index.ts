@@ -8,6 +8,10 @@ export * from './SetTween';
 
 export * from './CreateFinalWorkoutArray';
 
-export * from './ClickOutside'
+export * from './ClickOutside';
 
 export * from './Reset';
+
+export * from './Speak';
+
+export * from './LoadVoices';
