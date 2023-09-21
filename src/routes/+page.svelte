@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { chosenWorkout, started, workoutInfo } from '$lib/stores';
 	import { finish } from '$lib/assets/';
-	import { formatTime, reset, setTween } from '$lib/functions';
+	import { formatTime, setTween } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
 	import {
@@ -12,7 +12,6 @@
 		Modal,
 		WorkoutDurationEditor
 	} from '$lib/components/';
-	
 
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
@@ -33,36 +32,20 @@
 	}
 
 	// define current period
-	$: currentIndex = 0;
-	$: currentPeriod = finalWorkoutArray[currentIndex];
-	$: nextPeriod = finish ?? finalWorkoutArray[currentIndex + 1];
-	$: nextLabel = nextPeriod.label;
-
-	$: if (currentIndex < numberOfPeriods - 1) {
-		nextPeriod = finalWorkoutArray[currentIndex + 1];
-		nextLabel = nextPeriod.label;
-	}
-
-	// set tween for current period and then increment currentIndex when tween completes
-	export async function setPeriod() {
-		currentIndex = await setTween(currentIndex, currentPeriod);
-	}
-
-	// set current period when started, or reset when stopped
+	let currentIndex:number = 0;
+	let nextLabel: string = '';
 	$: {
+		const currentPeriod = finalWorkoutArray[currentIndex];
+		const nextPeriod = finalWorkoutArray[currentIndex + 1] === undefined ? finish : finalWorkoutArray[currentIndex + 1] ;
+		nextLabel = nextPeriod.label;
+
 		if ($started && currentPeriod && currentIndex >= 0 && currentIndex < numberOfPeriods) {
-			setPeriod();
+			setTween(currentIndex, currentPeriod).then((index) => {
+				currentIndex = index;
+			});
 		}
-		if ($started && !currentPeriod) {
-			reset(
-				started,
-				isModalOpen,
-				totalDurationTween,
-				currentIndex,
-				currentPeriod,
-				nextPeriod,
-				finalWorkoutArray
-			);
+		if ($started && currentIndex === numberOfPeriods) {
+			reset();
 		}
 	}
 
@@ -72,28 +55,26 @@
 		isModalOpen = true;
 	}
 
+	function reset() {
+		started.set(false);
+		isModalOpen = false;
+		currentIndex = 0;
+		totalDurationTween.set(0);
+	}
+
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key !== ' ' && event.key !== 'Escape') return;
 		if (event.key === ' ') {
 			setStarted();
 		}
 		if (event.key === 'Escape') {
-			reset(
-				started,
-				isModalOpen,
-				totalDurationTween,
-				currentIndex,
-				currentPeriod,
-				nextPeriod,
-				finalWorkoutArray
-			);
+			reset();
 		}
 	}
 
 	let isModalOpen = false;
 </script>
 
-<p>{$started}</p>
 <GithubCorner />
 <main>
 	<section>
@@ -126,7 +107,6 @@
 </main>
 
 <svelte:window on:keydown={handleKeydown} />
-
 {#if $started}
 	<Modal {isModalOpen}>
 		<!-- display current exercise and progress bar -->
@@ -139,7 +119,6 @@
 		{#if nextLabel === 'rest'}
 			<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
 		{/if}
-		<p>{$totalDurationTween}</p>
 	</Modal>
 {/if}
 

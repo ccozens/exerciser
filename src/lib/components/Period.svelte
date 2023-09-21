@@ -33,9 +33,6 @@
 	$: if ($started) {
 		loadVoices();
 	}
-	/* onMount(async () => {
-		await loadVoices();
-	}); */
 
 	function speak(nextLabel: string) {
 		speechSynthesis.cancel();
@@ -49,9 +46,14 @@
 	}
 </script>
 
-<p>{label === 'preTimer' ? 'Get ready...' : label}</p>
+{#if label === 'preTimer'}
+	<p>Get ready...</p>
+{:else if label === 'rest'}
+	<p>Next: {nextLabel}</p>
+{:else}
+	<p>{label}</p>
+{/if}
 <ProgressBar {tweenedProgress} {direction} />
-{voice}
 
 <style>
 	p {
