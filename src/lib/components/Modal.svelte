@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ScreenWakeLock } from 'svelte-screen-wake-lock';
+	import { browser } from '$app/environment';
+	import { ScreenWakeLock } from '$lib/components';
 	import { fly, fade } from 'svelte/transition';
 	import Portal from './Portal.svelte';
 	import { clickOutside } from '$lib/functions';
@@ -19,7 +20,7 @@
 </script>
 
 {#if isModalOpen}
-	<ScreenWakeLock />
+		<ScreenWakeLock />
 	<Portal>
 		<div
 			use:clickOutside

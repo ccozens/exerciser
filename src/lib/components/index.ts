@@ -11,3 +11,5 @@ export { default as Modal } from './Modal.svelte';
 export { default as GithubCorner } from './GithubCorner.svelte';
 
 export { default as WorkoutDurationEditor } from './WorkoutDurationEditor.svelte';
+
+export { default as ScreenWakeLock } from './ScreenWakeLock.svelte';
