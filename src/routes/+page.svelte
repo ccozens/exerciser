@@ -12,6 +12,7 @@
 		Modal,
 		WorkoutDurationEditor
 	} from '$lib/components/';
+	
 
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
@@ -92,6 +93,7 @@
 	let isModalOpen = false;
 </script>
 
+<p>{$started}</p>
 <GithubCorner />
 <main>
 	<section>
@@ -100,7 +102,9 @@
 		</heading>
 
 		<div class="container">
+			<p>container</p>
 			<article>
+				<p>article</p>
 				<h2><span class="capitals">{$chosenWorkout.name}</span> workout</h2>
 				<p class="duration">{formattedTotalDuration}</p>
 				<hr />
@@ -135,6 +139,7 @@
 		{#if nextLabel === 'rest'}
 			<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
 		{/if}
+		<p>{$totalDurationTween}</p>
 	</Modal>
 {/if}
 

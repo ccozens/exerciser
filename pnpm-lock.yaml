@@ -56,6 +56,9 @@ devDependencies:
   svelte-check:
     specifier: ^3.4.3
     version: 3.5.0(postcss-load-config@4.0.1)(postcss@8.4.27)(svelte@4.2.0)
+  svelte-screen-wake-lock:
+    specifier: ^1.0.9
+    version: 1.0.9
   tslib:
     specifier: ^2.4.1
     version: 2.6.1
@@ -3045,6 +3048,10 @@ packages:
       strip-indent: 3.0.0
       svelte: 4.2.0
       typescript: 5.1.6
+    dev: true
+
+  /svelte-screen-wake-lock@1.0.9:
+    resolution: {integrity: sha512-13wq0rjtDbqE/WuXB7pUWu/388BsAJJAKtIFndaPGPsEFwYphbURFB0gkKFFncYFsdn6d2CQ9MBaiy0DjJnIwQ==}
     dev: true
 
   /svelte@4.2.0:
