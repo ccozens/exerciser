@@ -83,9 +83,7 @@
 		</heading>
 
 		<div class="container">
-			<p>container</p>
 			<article>
-				<p>article</p>
 				<h2><span class="capitals">{$chosenWorkout.name}</span> workout</h2>
 				<p class="duration">{formattedTotalDuration}</p>
 				<hr />

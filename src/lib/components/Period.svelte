@@ -41,8 +41,7 @@
 {:else}
 	<p>{label}</p>
 {/if}
-<ProgressBar {tweenedProgress} {direction} />
-{voices}
+<ProgressBar {tweenedProgress} {direction} {tween}/>
 
 <style>
 	p {

@@ -1,10 +1,12 @@
 <!-- script -->
 <script lang="ts">
+		import { tweened } from 'svelte/motion';
+	import type { Tweened } from 'svelte/motion';
 	// props
 	export let tweenedProgress: number = 0;
 	export let tweenedProgressPercent: string = '0%';
 	export let direction: string = 'width';
-
+	export let tween: Tweened<number> = tweened(0, { duration: 0 });
 	// vars
 	let height: string = '100%';
 	let width: string = '100%';
@@ -32,6 +34,7 @@
 <!-- <div class="flex-wrapper"> -->
 <div class="progress-wrapper">
 	<div class="progress-bar" style={cssVarStyles} />
+	<p>{($tween/1000).toFixed(0)}</p>
 </div>
 <!-- </div> -->
 
