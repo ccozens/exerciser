@@ -1,3 +1,5 @@
+export * from './GetErrorMessage';
+
 export * from './FormatTime';
 
 export * from './AppendPreTimer';

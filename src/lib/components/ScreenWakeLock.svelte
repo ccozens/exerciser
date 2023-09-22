@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
+	import { getErrorMessage } from '$lib/functions';
 
 	let wakeLock: WakeLockSentinel | null = null;
 
@@ -12,7 +13,8 @@
 				wakeLock = await navigator.wakeLock.request('screen');
 				wakeLock.addEventListener('release', () => {});
 			} catch (err) {
-				console.error(`${err.name}, ${err.message}`);
+				const errorMessage: string = getErrorMessage(err);
+				console.error(errorMessage);
 			}
 		} else {
 			console.log('Wake lock is not supported by this browser');
