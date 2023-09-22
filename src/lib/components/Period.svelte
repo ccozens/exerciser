@@ -35,25 +35,16 @@
 	}
 
 	let isPaused: boolean = false;
-	export function handlePause() {
+	function handlePause() {
 		pause(tween);
 		isPaused = true;
 	}
 
-	export function handleResume() {
+	function handleResume() {
 		resume(tween, tweenedDuration);
 		isPaused = false;
 	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if ($started && event.key === ' ') {
-			if (!isPaused) handlePause();
-			if (isPaused) handleResume();
-		}
-	}
 </script>
-
-<svelte:window on:keydown={handleKeydown} />
 
 {#if label === 'preTimer'}
 	<p>Get ready...</p>
@@ -62,14 +53,20 @@
 {:else}
 	<p>{label}</p>
 {/if}
-<ProgressBar {tweenedProgress} {direction} {tween} />
+<div class="progress-wrapper">
+<ProgressBar {tweenedProgress} {direction} {tween} {tweenedDuration}/>
 {#if !isPaused}
-	<Button on:click={handlePause} text="Pause" />
+	<Button on:click={handlePause} text="Pause" --opacity="0.5"/>
 {:else}
-	<Button on:click={handleResume} text="Resume" />
+	<Button on:click={handleResume} text="Resume" --opacity="0.5"/>
 {/if}
+</div>
 
 <style>
+	.progress-wrapper {
+		width: 100%;
+		height: 90%;
+	}
 	p {
 		text-align: center;
 		color: var(--text-2);

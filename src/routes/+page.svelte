@@ -105,6 +105,7 @@
 				</div>
 			</article>
 		</div>
+
 	</section>
 </main>
 
@@ -113,14 +114,18 @@
 {#if $started}
 	<Modal {isModalOpen}>
 		<!-- display current exercise and progress bar -->
+		{#if currentIndex > 0}
+			{#if currentIndex % 2 === 0}
+				<p class="modal-progress">{(currentIndex / 2)+1} / {numberOfPeriods / 2}</p>
+			{:else}
+				<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
+			{/if}
+		{/if}
 		{#each finalWorkoutArray as period, index}
 			{#if index === currentIndex}
 				<Period {...period} {nextLabel} />
 			{/if}
 		{/each}
-		{#if nextLabel === 'rest'}
-			<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
-		{/if}
 	</Modal>
 {/if}
 
