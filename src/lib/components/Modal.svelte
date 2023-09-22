@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { ScreenWakeLock } from '$lib/components';
 	import { fly, fade } from 'svelte/transition';
 	import Portal from './Portal.svelte';

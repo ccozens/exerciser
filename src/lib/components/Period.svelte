@@ -3,7 +3,8 @@
 	import type { Tweened } from 'svelte/motion';
 	import ProgressBar from './ProgressBar.svelte';
 	import { started } from '$lib/stores';
-	import { speak, loadVoices } from '$lib/functions';
+	import { Button } from '$lib/components';
+	import { speak, loadVoices, pause, resume } from '$lib/functions';
 
 	// label, tween, tweenedDuration are passed in as the period object
 	export let label: string = 'exercise';
@@ -32,7 +33,27 @@
 	$: if (setNextLabel && voice) {
 		speak(setNextLabel, voice);
 	}
+
+	let isPaused: boolean = false;
+	export function handlePause() {
+		pause(tween);
+		isPaused = true;
+	}
+
+	export function handleResume() {
+		resume(tween, tweenedDuration);
+		isPaused = false;
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if ($started && event.key === ' ') {
+			if (!isPaused) handlePause();
+			if (isPaused) handleResume();
+		}
+	}
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 {#if label === 'preTimer'}
 	<p>Get ready...</p>
@@ -41,7 +62,12 @@
 {:else}
 	<p>{label}</p>
 {/if}
-<ProgressBar {tweenedProgress} {direction} {tween}/>
+<ProgressBar {tweenedProgress} {direction} {tween} />
+{#if !isPaused}
+	<Button on:click={handlePause} text="Pause" />
+{:else}
+	<Button on:click={handleResume} text="Resume" />
+{/if}
 
 <style>
 	p {

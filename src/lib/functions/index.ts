@@ -17,3 +17,5 @@ export * from './Reset';
 export * from './Speak';
 
 export * from './LoadVoices';
+
+export * from './PauseAndResume';

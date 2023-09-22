@@ -32,11 +32,14 @@
 	}
 
 	// define current period
-	let currentIndex:number = 0;
+	let currentIndex: number = 0;
 	let nextLabel: string = '';
 	$: {
 		const currentPeriod = finalWorkoutArray[currentIndex];
-		const nextPeriod = finalWorkoutArray[currentIndex + 1] === undefined ? finish : finalWorkoutArray[currentIndex + 1] ;
+		const nextPeriod =
+			finalWorkoutArray[currentIndex + 1] === undefined
+				? finish
+				: finalWorkoutArray[currentIndex + 1];
 		nextLabel = nextPeriod.label;
 
 		if ($started && currentPeriod && currentIndex >= 0 && currentIndex < numberOfPeriods) {
@@ -63,11 +66,12 @@
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
-		if (event.key !== ' ' && event.key !== 'Escape') return;
-		if (event.key === ' ') {
-			setStarted();
+		const key = event.key;
+		if (key !== ' ' && key !== 'Escape') return;
+		if (key === ' ') {
+			if (!$started) setStarted();
 		}
-		if (event.key === 'Escape') {
+		if (key === 'Escape') {
 			reset();
 		}
 	}
@@ -105,6 +109,7 @@
 </main>
 
 <svelte:window on:keydown={handleKeydown} />
+
 {#if $started}
 	<Modal {isModalOpen}>
 		<!-- display current exercise and progress bar -->
@@ -113,7 +118,6 @@
 				<Period {...period} {nextLabel} />
 			{/if}
 		{/each}
-		<!-- workout progress -->
 		{#if nextLabel === 'rest'}
 			<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
 		{/if}
