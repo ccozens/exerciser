@@ -1,6 +1,6 @@
 <!-- script -->
 <script lang="ts">
-		import { tweened } from 'svelte/motion';
+	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
 	// props
 	export let tweenedProgress: number = 0;
@@ -31,12 +31,10 @@
 		`--height:${height}; --width:${width}; --gradientDirection:${gradientDirection};` as string;
 </script>
 
-<!-- <div class="flex-wrapper"> -->
 <div class="progress-wrapper">
 	<div class="progress-bar" style={cssVarStyles} />
-	<p>{($tween/1000).toFixed(0)}</p>
+	<div class="countup">{($tween / 1000).toFixed(0)}</div>
 </div>
-<!-- </div> -->
 
 <style>
 	:root {
@@ -46,27 +44,13 @@
 		--gradientDirection: inherit;
 	}
 
-	/* .flex-wrapper {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-		height: 100%;
-		width: var(--wrapper-width, 30vw);
-		height: var(--wrapper-height, 20vh);
-	} */
-
 	.progress-bar {
 		width: var(--width, 0%);
 		height: var(--height, 0%);
 		transition-property: var(--transition-property);
 		border-radius: var(--radius);
 		transition-timing-function: linear;
-		background: linear-gradient(
-			var(--gradientDirection),
-			oklch(90% 0.3 200),
-			oklch(87% 0.2 90)
-		);
+		background: linear-gradient(var(--gradientDirection), oklch(90% 0.3 200), oklch(87% 0.2 90));
 	}
 
 	.progress-wrapper {
@@ -75,5 +59,20 @@
 		background-color: oklch(25% 0.1 147 / 0.5); /* swatch 8 with 50% transparency */
 		border-radius: var(--radius);
 		overflow: hidden;
+	}
+
+	.countup {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 2rem;
+		color: var(--text-2);
+		background-color: oklch(16% 0.06 147 / 0.5);
+		border-radius: 50%;
+		height: 3rem;
+		width: 3rem;
+		text-align: center;
+		padding: auto;
 	}
 </style>

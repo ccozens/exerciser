@@ -46,5 +46,6 @@
 <style>
 	p {
 		text-align: center;
+		color: var(--text-2);
 	}
 </style>

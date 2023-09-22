@@ -202,6 +202,7 @@
 
 	.modal-progress {
 		text-align: center;
+		color: var(--text-2);
 	}
 
 	.duration {
