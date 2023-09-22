@@ -24,7 +24,7 @@
 	let voices: SpeechSynthesisVoice[] = [];
 
 	$: if ($started) {
-		loadVoices(voices).then((voices) => {
+		loadVoices({ voices: voices }).then((voices) => {
 			voice = voices[50];
 		});
 	}
@@ -42,6 +42,7 @@
 	<p>{label}</p>
 {/if}
 <ProgressBar {tweenedProgress} {direction} />
+{voices}
 
 <style>
 	p {
