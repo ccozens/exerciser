@@ -10,9 +10,10 @@
 		WorkoutSelector,
 		GithubCorner,
 		Modal,
-		WorkoutDurationEditor
+		WorkoutDurationEditor,
+		Exercises,
+		CurrentPeriod
 	} from '$lib/components/';
-	import Exercises from '$lib/components/Exercises.svelte';
 
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
@@ -79,6 +80,7 @@
 
 	let isModalOpen = false;
 </script>
+
 <GithubCorner />
 <main>
 	<section>
@@ -92,7 +94,7 @@
 				<p class="duration">{formattedTotalDuration}</p>
 
 				<Exercises />
-				
+
 				<div class="buttons">
 					<WorkoutSelector />
 					<WorkoutDurationEditor />
@@ -100,7 +102,6 @@
 				</div>
 			</article>
 		</div>
-
 	</section>
 </main>
 
@@ -109,13 +110,7 @@
 {#if $started}
 	<Modal {isModalOpen}>
 		<!-- display current exercise and progress bar -->
-		{#if currentIndex > 0}
-			{#if currentIndex % 2 === 0}
-				<p class="modal-progress">{(currentIndex / 2)+1} / {numberOfPeriods / 2}</p>
-			{:else}
-				<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
-			{/if}
-		{/if}
+		<CurrentPeriod {currentIndex} {numberOfPeriods} />
 		{#each finalWorkoutArray as period, index}
 			{#if index === currentIndex}
 				<Period {...period} {nextLabel} />
@@ -133,16 +128,16 @@
 
 	heading {
 		padding: 2rem 0rem 0rem 0rem;
-	}
-	h1 {
-		font-size: 2.5rem;
+
+		> h1 {
+			font-size: 2.5rem;
+		}
 	}
 
 	h2 {
 		font-size: 2rem;
 		text-align: center;
 	}
-
 
 	section {
 		display: grid;
@@ -159,13 +154,9 @@
 		padding: 1rem;
 	}
 
-
-
 	.container {
 		padding: 2rem 5rem;
 	}
-
-
 
 	.capitals {
 		text-transform: capitalize;
@@ -179,10 +170,7 @@
 		padding: 0 1rem 1rem 1rem;
 	}
 
-	.modal-progress {
-		text-align: center;
-		color: var(--text-2);
-	}
+
 
 	.duration {
 		font-size: 1.2rem;
