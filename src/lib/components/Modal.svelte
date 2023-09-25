@@ -1,15 +1,15 @@
 <script lang="ts">
+	import { started, isModalOpen } from '$lib/stores';
 	import { ScreenWakeLock } from '$lib/components';
 	import { fly, fade } from 'svelte/transition';
 	import Portal from './Portal.svelte';
 	import { clickOutside } from '$lib/functions';
 	// control whether modal open when a component loads
-	export let isModalOpen = false;
-	export let background = true;
+	let background = true;
 
 	// function to close modal
 	function closeModal() {
-		isModalOpen = false;
+		started.set(false);
 	}
 
 	$: clickOutsideProps = {
@@ -18,8 +18,8 @@
 	};
 </script>
 
-{#if isModalOpen}
-		<ScreenWakeLock />
+{#if $isModalOpen}
+	<ScreenWakeLock />
 	<Portal>
 		<div
 			use:clickOutside

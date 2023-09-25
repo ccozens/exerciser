@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { chosenWorkout, started, workoutInfo } from '$lib/stores';
-	import { formatTime } from '$lib/functions';
+	import { chosenWorkout, started, isModalOpen, workoutInfo } from '$lib/stores';
+	import { formatTime, setStarted } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
 	import {
@@ -10,12 +10,11 @@
 		Modal,
 		WorkoutDurationEditor,
 		Exercises,
-		CurrentPeriod,
+		CurrentPeriod
 	} from '$lib/components/';
 
 	// define total duration
 	$: totalDuration = $workoutInfo.totalDuration;
-
 
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
@@ -28,17 +27,12 @@
 		totalDurationTween.set(totalDuration * 1000, { duration: totalDuration * 1000 });
 	}
 
-
-
-	// start workout
-	function setStarted() {
-		started.set(true);
-		isModalOpen = true;
+	function handleStart() {
+		setStarted();
 	}
 
 	function reset() {
 		started.set(false);
-		isModalOpen = false;
 		// currentIndex = 0;
 		totalDurationTween.set(0);
 	}
@@ -54,9 +48,7 @@
 		}
 	}
 
-	let isModalOpen = false;
 </script>
-
 <GithubCorner />
 <main>
 	<section>
@@ -74,7 +66,7 @@
 				<div class="buttons">
 					<WorkoutSelector />
 					<WorkoutDurationEditor />
-					<Button text="Start" on:click={setStarted} />
+					<Button text="Start" on:click={handleStart} />
 				</div>
 			</article>
 		</div>
@@ -84,7 +76,7 @@
 <svelte:window on:keydown={handleKeydown} />
 
 {#if $started}
-	<Modal {isModalOpen}>
+	<Modal >
 		<!-- display current exercise and progress bar -->
 		<CurrentPeriod />
 	</Modal>
@@ -140,8 +132,6 @@
 		gap: 1rem;
 		padding: 0 1rem 1rem 1rem;
 	}
-
-
 
 	.duration {
 		font-size: 1.2rem;
