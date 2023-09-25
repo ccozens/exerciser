@@ -1,26 +1,21 @@
 <script lang="ts">
 	import { chosenWorkout, started, workoutInfo } from '$lib/stores';
-	import { finish } from '$lib/assets/';
-	import { formatTime, setTween } from '$lib/functions';
+	import { formatTime } from '$lib/functions';
 	import { tweened } from 'svelte/motion';
 	import type { Tweened } from 'svelte/motion';
 	import {
 		Button,
-		Period,
 		WorkoutSelector,
 		GithubCorner,
 		Modal,
 		WorkoutDurationEditor,
 		Exercises,
-		CurrentPeriod
+		CurrentPeriod,
 	} from '$lib/components/';
 
-	// define workout
-	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
 	// define total duration
 	$: totalDuration = $workoutInfo.totalDuration;
-	// number of periods
-	$: numberOfPeriods = finalWorkoutArray.length;
+
 
 	// tween for total workout
 	const totalDurationTween: Tweened<number> = tweened(0, { duration: 0 });
@@ -33,26 +28,7 @@
 		totalDurationTween.set(totalDuration * 1000, { duration: totalDuration * 1000 });
 	}
 
-	// define current period
-	let currentIndex: number = 0;
-	let nextLabel: string = '';
-	$: {
-		const currentPeriod = finalWorkoutArray[currentIndex];
-		const nextPeriod =
-			finalWorkoutArray[currentIndex + 1] === undefined
-				? finish
-				: finalWorkoutArray[currentIndex + 1];
-		nextLabel = nextPeriod.label;
 
-		if ($started && currentPeriod && currentIndex >= 0 && currentIndex < numberOfPeriods) {
-			setTween(currentIndex, currentPeriod).then((index) => {
-				currentIndex = index;
-			});
-		}
-		if ($started && currentIndex === numberOfPeriods) {
-			reset();
-		}
-	}
 
 	// start workout
 	function setStarted() {
@@ -63,7 +39,7 @@
 	function reset() {
 		started.set(false);
 		isModalOpen = false;
-		currentIndex = 0;
+		// currentIndex = 0;
 		totalDurationTween.set(0);
 	}
 
@@ -110,12 +86,7 @@
 {#if $started}
 	<Modal {isModalOpen}>
 		<!-- display current exercise and progress bar -->
-		<CurrentPeriod {currentIndex} {numberOfPeriods} />
-		{#each finalWorkoutArray as period, index}
-			{#if index === currentIndex}
-				<Period {...period} {nextLabel} />
-			{/if}
-		{/each}
+		<CurrentPeriod />
 	</Modal>
 {/if}
 

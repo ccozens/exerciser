@@ -16,4 +16,6 @@ export { default as ScreenWakeLock } from './ScreenWakeLock.svelte';
 
 export { default as Exercises } from './Exercises.svelte';
 
+export { default as CurrentPeriodNumber } from './CurrentPeriodNumber.svelte';
+
 export { default as CurrentPeriod } from './CurrentPeriod.svelte';

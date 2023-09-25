@@ -1,22 +1,43 @@
 <!-- script -->
-<script lang="ts">
-	export let currentIndex = 0;
-	export let numberOfPeriods = 0;
+<script lang='ts'>
+    import { started, workoutInfo } from '$lib/stores';
+	import { finish } from '$lib/assets/';
+    import { setTween, reset } from '$lib/functions';
+    import type { Workout } from '$lib/types';
+    import { CurrentPeriodNumber, Period } from '$lib/components/';
+
+    	// define workout
+	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
+    // number of periods
+	$: numberOfPeriods = finalWorkoutArray.length;
+
+    	// define current period
+	let currentIndex: number = 0;
+	let nextLabel: string = '';
+	$: {
+		const currentPeriod = finalWorkoutArray[currentIndex];
+		const nextPeriod =
+			finalWorkoutArray[currentIndex + 1] === undefined
+				? finish
+				: finalWorkoutArray[currentIndex + 1];
+		nextLabel = nextPeriod.label;
+
+		if ($started && currentPeriod && currentIndex >= 0 && currentIndex < numberOfPeriods) {
+			setTween(currentIndex, currentPeriod).then((index) => {
+				currentIndex = index;
+			});
+		}
+		if ($started && currentIndex === numberOfPeriods) {
+			reset();
+		}
+	}
 </script>
 
 <!-- html -->
 
-{#if currentIndex > 0}
-	{#if currentIndex % 2 === 0}
-		<p class="modal-progress">{currentIndex / 2 + 1} / {numberOfPeriods / 2}</p>
-	{:else}
-		<p class="modal-progress">{(currentIndex + 1) / 2} / {numberOfPeriods / 2}</p>
-	{/if}
-{/if}
-
-<style>
-	.modal-progress {
-		text-align: center;
-		color: var(--text-2);
-	}
-</style>
+<CurrentPeriodNumber {currentIndex} {numberOfPeriods} />
+{#each finalWorkoutArray as period, index}
+    {#if index === currentIndex}
+        <Period {...period} {nextLabel} />
+    {/if}
+{/each}
