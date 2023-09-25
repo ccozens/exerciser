@@ -12,7 +12,8 @@
 		Modal,
 		WorkoutDurationEditor
 	} from '$lib/components/';
-	
+	import Exercises from '$lib/components/Exercises.svelte';
+
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
 	// define total duration
@@ -89,14 +90,9 @@
 			<article>
 				<h2><span class="capitals">{$chosenWorkout.name}</span> workout</h2>
 				<p class="duration">{formattedTotalDuration}</p>
-				<hr />
-				<div class="exercises">
-					{#each $chosenWorkout.exercises as exercise}
-						<input value={exercise} />
-					{/each}
-				</div>
-				<hr />
 
+				<Exercises />
+				
 				<div class="buttons">
 					<WorkoutSelector />
 					<WorkoutDurationEditor />
@@ -147,12 +143,7 @@
 		text-align: center;
 	}
 
-	hr {
-		width: 95%;
-		border: none;
-		border-top: 1px solid var(--accent);
-		margin: 0.3rem;
-	}
+
 	section {
 		display: grid;
 		place-items: center;
@@ -168,33 +159,13 @@
 		padding: 1rem;
 	}
 
-	input {
-		border: none;
-		border-radius: var(--radius);
-		font-size: 1.5rem;
-		background-color: var(--surface-1);
-		color: var(--text-1);
-		border: solid 1px transparent;
-		text-align: center;
-		transition: all 0.2s ease-in-out;
-	}
 
-	input:hover,
-	input:focus,
-	input:active {
-		color: var(--text-2);
-		border: solid 1px var(--accent);
-	}
 
 	.container {
 		padding: 2rem 5rem;
 	}
 
-	.exercises {
-		display: grid;
-		place-items: center;
-		border-radius: var(--radius);
-	}
+
 
 	.capitals {
 		text-transform: capitalize;

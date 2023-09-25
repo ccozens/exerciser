@@ -13,3 +13,5 @@ export { default as GithubCorner } from './GithubCorner.svelte';
 export { default as WorkoutDurationEditor } from './WorkoutDurationEditor.svelte';
 
 export { default as ScreenWakeLock } from './ScreenWakeLock.svelte';
+
+export { default as Exercises } from './Exercises.svelte';
