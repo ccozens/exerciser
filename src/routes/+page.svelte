@@ -12,7 +12,7 @@
 		Modal,
 		WorkoutDurationEditor
 	} from '$lib/components/';
-
+	
 	// define workout
 	$: finalWorkoutArray = $workoutInfo.finalWorkoutArray;
 	// define total duration
@@ -78,7 +78,6 @@
 
 	let isModalOpen = false;
 </script>
-
 <GithubCorner />
 <main>
 	<section>
